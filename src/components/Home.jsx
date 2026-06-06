@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import images from "../assets/images"; // Asegúrate de tener un archivo de imágenes exportado correctamente
 
 export default function Home() {
 
