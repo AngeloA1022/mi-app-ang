@@ -9,9 +9,11 @@ export default function Navbar() {
     <nav>
       <ul>
         <li>
-          <Link to="/">Inicio</Link>
+          <Link to="/">Bienvenido</Link>
         </li>
-
+        <li>
+          <Link to="/inicio">Inicio</Link>
+        </li>
         <li>
           <Link to="/contacto">Contacto</Link>
         </li>

@@ -17,7 +17,7 @@ const slides = [
   { image: goodra, title: 'Goodra', description: 'Defensivo y versátil' },
 ];
 
-export default function Home() {
+export default function Bienvenida() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const startX = useRef(0);
   const autoRef = useRef(null);

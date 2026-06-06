@@ -2,7 +2,8 @@ import React from "react";
 import { BrowserRouter , Route, Routes } from "react-router-dom";
 import './App.css';
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
+import Bienvenida from "./components/Bienvenida";
+import Inicio from "./components/Inicio";
 import Contacto from "./components/Contacto";
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Bienvenida />} />
+        <Route path='/inicio' element={<Inicio />} />
         <Route path='/contacto' element={<Contacto />} />
       </Routes>
     </BrowserRouter>
