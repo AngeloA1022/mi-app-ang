@@ -61,10 +61,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* INICIO */}
+      <section id="inicio" className="inicio">
+        <div className="container">
+          <h2>Inicio</h2>
+          <p>Bienvenido a la sección principal de la guía. Aquí encontrarás información general sobre Pokémon Unite y cómo empezar.</p>
+        </div>
+      </section>
 
-      {/* DESTACADOS */}
-      <section className="destacados">
-        <h2>Pokémon Destacados</h2>
+      {/* CONSEJOS */}
+      <section id="consejos" className="consejos">
+        <div className="container">
+          <h2>Consejos</h2>
+          <ul>
+            <li>Juega en equipo para controlar las zonas de objetivo.</li>
+            <li>Sube de nivel a tus Pokémon rápidamente con golpes a los neutrales.</li>
+            <li>Utiliza objetos de apoyo y objetos de movilidad cuando sea necesario.</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* PERSONAJES */}
+      <section id="personajes" className="destacados">
+        <h2>Personajes</h2>
 
         <div className="carrusel-container">
 
@@ -115,7 +134,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* LINK EXTRA COMO TU EJEMPLO */}
+      {/* MAPAS */}
+      <section id="mapas" className="mapas">
+        <div className="container">
+          <h2>Mapas</h2>
+          <p>Conoce las zonas del campo de batalla y cómo posicionarte en cada uno de los mapas.</p>
+        </div>
+      </section>
+
+      {/* OBJETOS */}
+      <section id="objetos" className="objetos">
+        <div className="container">
+          <h2>Objetos</h2>
+          <p>Los objetos pueden cambiar la partida. Aprende cuáles usar en cada situación.</p>
+        </div>
+      </section>
+
       <div style={{ marginTop: "20px" }}>
         <Link to="/contacto">Ir a Contacto</Link>
       </div>
