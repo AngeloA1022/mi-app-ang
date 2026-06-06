@@ -11,28 +11,7 @@ export default function Navbar() {
         <li>
           <Link to="/">Inicio</Link>
         </li>
-        {onHome && (
-          <>
-            <li>
-              <a href="#bienvenida">Bienvenida</a>
-            </li>
-            <li>
-              <a href="#inicio">Inicio página</a>
-            </li>
-            <li>
-              <a href="#consejos">Consejos</a>
-            </li>
-            <li>
-              <a href="#personajes">Personajes</a>
-            </li>
-            <li>
-              <a href="#mapas">Mapas</a>
-            </li>
-            <li>
-              <a href="#objetos">Objetos</a>
-            </li>
-          </>
-        )}
+
         <li>
           <Link to="/contacto">Contacto</Link>
         </li>
