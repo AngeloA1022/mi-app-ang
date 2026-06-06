@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Contacto() {
+export default function Contacto() {
 
 const [form, setForm] = useState({
 nombre: "",
@@ -124,9 +124,9 @@ return ( <section id="contacto">
 
     </form>
 
-    <div style={{ marginTop: "20px" }}>
+
       <Link to="/">Volver a Inicio</Link>
-    </div>
+
 
   </div>
 
@@ -136,4 +136,4 @@ return ( <section id="contacto">
 );
 }
 
-export default Contacto;
+

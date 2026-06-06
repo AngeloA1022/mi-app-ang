@@ -70,7 +70,7 @@ export default function Bienvenida() {
   return (
     <div>
       {/* BIENVENIDA */}
-      <section id="bienvenida" className="Bienvenida">
+      <section id="bienvenida" className="bienvenida">
         <div className="container">
           <h2>Bienvenido a la Guía de Pokemon Unite</h2>
 
@@ -130,9 +130,7 @@ export default function Bienvenida() {
         </div>
       </section>
 
-      <div style={{ marginTop: '20px' }}>
-        <Link to="/contacto">Ir a Contacto</Link>
-      </div>
+
     </div>
   );
 }
