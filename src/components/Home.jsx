@@ -1,6 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import images from "../assets/images"; // Asegúrate de tener un archivo de imágenes exportado correctamente
+import logo from '../images/logo.png';
+import aegislash from '../images/aegislash.png';
+import charizard from '../images/charizard.png';
+import greninja from '../images/greninja.png';
+import decidueye from '../images/decidueye.png';
+import blastoise from '../images/blastoise.png';
+import goodra from '../images/goodra.png';
 
 export default function Home() {
 
@@ -37,7 +43,7 @@ export default function Home() {
             </div>
 
             <div className="bienvenida-box bienvenida-box-imagen">
-              <img src="images/logo.png" alt="Pokemon Unite" />
+              <img src={logo} alt="Pokemon Unite" />
             </div>
 
             <div className="bienvenida-box bienvenida-box-boton">
@@ -63,37 +69,37 @@ export default function Home() {
           <div className="carrusel-slide" id="slideDest">
 
             <div className="item">
-              <img src="images/aegislash.png" alt="Aegislash"/>
+              <img src={aegislash} alt="Aegislash"/>
               <h3>Aegislash</h3>
               <p>Equilibrado y versátil</p>
             </div>
 
             <div className="item">
-              <img src="images/charizard.png" alt="Charizard"/>
+              <img src={charizard} alt="Charizard"/>
               <h3>Charizard</h3>
               <p>Gran poder equilibrado</p>
             </div>
 
             <div className="item">
-              <img src="images/greninja.png" alt="Greninja"/>
+              <img src={greninja} alt="Greninja"/>
               <h3>Greninja</h3>
               <p>Ofensivo y ágil</p>
             </div>
 
             <div className="item">
-              <img src="images/decidueye.png" alt="Decidueye"/>
+              <img src={decidueye} alt="Decidueye"/>
               <h3>Decidueye</h3>
               <p>Arquero y veloz</p>
             </div>
 
             <div className="item">
-              <img src="images/blastoise.png" alt="Blastoise"/>
+              <img src={blastoise} alt="Blastoise"/>
               <h3>Blastoise</h3>
               <p>Defensivo y poderoso</p>
             </div>
 
             <div className="item">
-              <img src="images/goodra.png" alt="Goodra"/>
+              <img src={goodra} alt="Goodra"/>
               <h3>Goodra</h3>
               <p>Defensivo y versátil</p>
             </div>
