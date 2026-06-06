@@ -1,23 +1,79 @@
 <!doctype html>
+
 <html lang="es">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    
-    <!-- ICONO -->
     <link rel="icon" type="image/png" href="/images/icono.png" />
-
-    <!-- RESPONSIVE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- TÍTULO -->
     <title>Guía para Pokémon Unite</title>
-  </head>
 
-  <body>
-    <!-- AQUÍ SE RENDERIZA REACT -->
+```
+<!-- Puedes agregar tu CSS aquí -->
+<link rel="stylesheet" href="/styles.css">
+```
+
+</head>
+
+<body>
+
+```
+<!-- ===================== -->
+<!-- HEADER -->
+<!-- ===================== -->
+<header>
+    <div class="logo">
+        <img src="images/logo.png" alt="Logo de Pokemon Unite" class="logo-img"> 
+        <h1>Guía para Pokémon Unite</h1>
+    </div>
+
+    <div class="container">
+        <p>
+            Bienvenido a la guía de Pokémon Unite, el juego de batalla en equipo que ha conquistado a millones de jugadores en todo el mundo.
+            En esta guía, encontrarás consejos, estrategias y trucos para mejorar tu rendimiento en el campo de batalla y convertirte en un maestro de Pokémon Unite.
+        </p>
+        <br>
+    </div>
+
+    <div class="usuario-header" style="display:none;"></div>
+
+    <hr>
+</header>
+
+
+<!-- ===================== -->
+<!-- APP REACT -->
+<!-- ===================== -->
+<main>
     <div id="root"></div>
+</main>
 
-    <!-- ARCHIVO PRINCIPAL -->
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<!-- ===================== -->
+<!-- FOOTER -->
+<!-- ===================== -->
+<footer id="footer" class="footer">
+    <div class="footer-container">
+        <h2>Contacto</h2>
+        <p><strong>Empresa:</strong> Pokémon Unite Guide</p>
+        <p><strong>Autor:</strong> Doble AA</p>
+        <p><strong>Correo:</strong> dobleaa@email.com</p>
+        <p><strong>Institución:</strong> INACAP</p>
+        <p>
+            <strong>Información:</strong>
+            <a href="https://unite.pokemon.com/es-es/" target="_blank">
+                Más información
+            </a>
+        </p>
+        <p>© 2026 Todos los derechos reservados</p>
+    </div>
+</footer>
+
+
+<!-- ===================== -->
+<!-- SCRIPT REACT -->
+<!-- ===================== -->
+<script type="module" src="/src/main.jsx"></script>
+```
+
+</body>
 </html>
