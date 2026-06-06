@@ -8,6 +8,8 @@ import decidueye from '../images/decidueye.png';
 import blastoise from '../images/blastoise.png';
 import goodra from '../images/goodra.png';
 
+
+
 export default function Home() {
 
   const abrirModal = (id) => {
