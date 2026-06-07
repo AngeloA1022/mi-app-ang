@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from '../images/logo.png';
 import aegislash from '../images/aegislash.png';
 import charizard from '../images/charizard.png';
@@ -22,9 +22,8 @@ export default function Bienvenida() {
   const startX = useRef(0);
   const autoRef = useRef(null);
 
-  const navigate = useNavigate();
-  const abrirModal = () => {
-    navigate('/Registro');
+  const abrirModal = (id) => {
+    alert("Abrir modal: " + id);
   };
 
   const nextSlide = () => {
