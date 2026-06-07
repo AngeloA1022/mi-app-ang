@@ -1,69 +1,124 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Login() {
-  // Estado para controlar la visibilidad del modal
-  const [isOpen, setIsOpen] = useState(false);
+const USUARIOS_KEY = "usuariosPokemonUnite";
 
-  // Estado para manejar los mensajes de error/éxito en tiempo real de forma dinámica
-  const [errores, setErrores] = useState([]);
-  const [loginExitoso, setLoginExitoso] = useState(false);
+export default function Login() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [usuarios, setUsuarios] = useState([]);
+
+  // Control de strings del formulario de login
+  const [valores, setValores] = useState({
+    email: "",
+    password: "",
+  });
+
+  // Control de interacción para activar los textos de error individualmente
+  const [tocados, setTocados] = useState({
+    email: false,
+    password: false,
+  });
+
+  const [mensajeGlobal, setMensajeGlobal] = useState({ texto: "", color: "" });
+
+  // Cargar base de datos local al iniciar para validar credenciales
+  useEffect(() => {
+    const data = localStorage.getItem(USUARIOS_KEY);
+    if (data) {
+      try {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) setUsuarios(parsed);
+      } catch (e) {
+        setUsuarios([]);
+      }
+    }
+  }, [isOpen]); // Recarga la lista de usuarios cada vez que se abre el modal
 
   const abrirModal = () => setIsOpen(true);
   
   const cerrarModal = () => {
     setIsOpen(false);
-    setErrores([]);
-    setLoginExitoso(false);
+    setValores({ email: "", password: "" });
+    setTocados({ email: false, password: false });
+    setMensajeGlobal({ texto: "", color: "" });
   };
 
+  // --- FUNCIONES DE VALIDACIÓN ---
+  const campoVacio = (valor) => valor.trim() === "";
+
+  const obtenerErrorEmail = (email) => {
+    if (campoVacio(email)) return "Campo obligatorio";
+    if (!/@/.test(email)) return "Debe contener @";
+    if (!/^[^\s@]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email)) return "Formato incorrecto";
+    if (!/\.(com|cl|net|org)$/i.test(email)) {
+      return "Solo se permiten dominios con extensión .com, .cl, .net o .org";
+    }
+    return "";
+  };
+
+  // --- EVALUACIÓN EN TIEMPO REAL ---
+  const erroresValidacion = {
+    email: obtenerErrorEmail(valores.email),
+    password: campoVacio(valores.password) ? "Campo obligatorio" : "",
+  };
+
+  const manejarInputChange = (e) => {
+    const { name, value } = e.target;
+    setValores(prev => ({ ...prev, [name]: value }));
+  };
+
+  const manejarBlur = (e) => {
+    const { name } = e.target;
+    setTocados(prev => ({ ...prev, [name]: true }));
+  };
+
+  // --- SUBMIT DEL FORMULARIO ---
   const manejarLogin = (event) => {
-    // ● Validación Preventiva: Uso obligatorio de event.preventDefault()
     event.preventDefault();
 
-    // ● Manipulación del DOM: Captura de valores mediante document.getElementById
-    const email = document.getElementById("login-email").value.trim();
-    const password = document.getElementById("login-password").value;
+    // Activar los feedbacks al intentar enviar
+    setTocados({ email: true, password: true });
 
-    let listaErrores = [];
+    const tieneErrores = Object.values(erroresValidacion).some(error => error !== "");
 
-    // Validar que los campos no estén vacíos
-    if (!email || !password) {
-      listaErrores.push("Todos los campos son obligatorios.");
+    if (tieneErrores) {
+      setMensajeGlobal({ texto: "Corrige los errores", color: "red" });
+      return;
     }
 
-    // ● Validar que el email tenga un formato válido (regex)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email && !emailRegex.test(email)) {
-      listaErrores.push("El formato del correo electrónico no es válido.");
+    // Buscar al usuario por correo y verificar contraseña
+    const usuarioEncontrado = usuarios.find(
+      u => u.email === valores.email.trim() && u.password === valores.password.trim()
+    );
+
+    if (!usuarioEncontrado) {
+      setMensajeGlobal({ texto: "Credenciales incorrectas o usuario no registrado", color: "red" });
+      return;
     }
 
-    // ● Feedback en Tiempo Real: Renderizado dinámico en la pantalla
-    if (listaErrores.length > 0) {
-      setErrores(listaErrores);
-      setLoginExitoso(false);
-    } else {
-      setErrores([]);
-      setLoginExitoso(true);
-      
-      // Limpieza del formulario tras un login exitoso utilizando el DOM
-      document.getElementById("form-login").reset();
-    }
+    setMensajeGlobal({ texto: "Login exitoso", color: "#00ff88" });
+
+    setTimeout(() => {
+      cerrarModal();
+    }, 1000);
+  };
+
+  // Generador dinámico de clases según el estado de validación
+  const obtenerClaseInput = (campo) => {
+    if (!tocados[campo]) return ""; 
+    return erroresValidacion[campo] ? "input-error" : "input-ok";
   };
 
   return (
     <section id="inicio" className="inicio">
       <div className="container">
         
-        {/* Botón para abrir el modal */}
         <button onClick={abrirModal} className="btn-abrir-modal">
           Iniciar Sesión
         </button>
 
-        {/* ESTRUCTURA DEL MODAL (Condicional) */}
         {isOpen && (
           <div className="modal-overlay" onClick={cerrarModal}>
-            {/* e.stopPropagation() evita que el modal se cierre al hacer click dentro del formulario */}
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               
               <button className="modal-close-btn" onClick={cerrarModal}>
@@ -73,34 +128,49 @@ export default function Login() {
               <h2>Iniciar Sesión</h2>
               
               <form id="form-login" onSubmit={manejarLogin}>
+                
                 <div className="form-group">
-                  <label htmlFor="login-email">Email:</label>
-                  <input type="text" id="login-email" name="email" />
+                  <label htmlFor="emailLogin">Email:</label>
+                  <input 
+                    type="text" 
+                    id="emailLogin" 
+                    name="email" 
+                    value={valores.email}
+                    onChange={manejarInputChange}
+                    onBlur={manejarBlur}
+                    className={obtenerClaseInput("email")}
+                  />
+                  {tocados.email && (
+                    <span id="errorEmailLogin" style={{ color: erroresValidacion.email ? "red" : "#00ff88" }}>
+                      {erroresValidacion.email || "✓ Correcto"}
+                    </span>
+                  )}
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="login-password">Contraseña:</label>
-                  <input type="password" id="login-password" name="password" />
+                  <label htmlFor="passwordLogin">Contraseña:</label>
+                  <input 
+                    type="password" 
+                    id="passwordLogin" 
+                    name="password" 
+                    value={valores.password}
+                    onChange={manejarInputChange}
+                    onBlur={manejarBlur}
+                    className={obtenerClaseInput("password")}
+                  />
+                  {tocados.password && (
+                    <span id="errorPasswordLogin" style={{ color: erroresValidacion.password ? "red" : "#00ff88" }}>
+                      {erroresValidacion.password || "✓ Correcto"}
+                    </span>
+                  )}
                 </div>
 
                 <button type="submit" className="btn-submit">Ingresar</button>
               </form>
 
-              {/* Elementos HTML dinámicos para feedback de errores */}
-              {errores.length > 0 && (
-                <div className="errores-feedback">
-                  <ul>
-                    {errores.map((error, index) => (
-                      <li key={index}>{error}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Elemento HTML dinámico para feedback de éxito */}
-              {loginExitoso && (
-                <div className="exito-feedback">
-                  <strong>¡Ingreso completado con éxito!</strong>
+              {mensajeGlobal.texto && (
+                <div id="mensajeRegistro" style={{ color: mensajeGlobal.color }}>
+                  {mensajeGlobal.texto}
                 </div>
               )}
 
@@ -108,7 +178,6 @@ export default function Login() {
           </div>
         )}
 
-        {/* Sección de Enlaces */}
         <section>
           <div className="enlaces">
             <h2>Enlaces Útiles</h2>

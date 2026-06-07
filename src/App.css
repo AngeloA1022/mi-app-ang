@@ -20,18 +20,8 @@ html {
     box-sizing: border-box;
 }
 
-/* Variables globales de colores y tamaños */
-:root {
-    --bg: #ffffff; /* color de fondo principal */
-    --text: #000000; /* color de texto principal */
-    --primary: #0ebd80; /* verde principal */
-    --primary-dark: #105d48; /* verde oscuro */
-    --blue: #4169E1;; /* azul secundario */
-    --accent: rgba(31, 169, 120, 0.16);
-    --primary-contrast: #ffffff; /* texto sobre el color principal */
-    --nav-height: 80px; /* altura inicial del navbar */
-    --nav-bg: rgba(255,255,255,0.95); /* fondo del navbar */
-}
+/* Variables globales centralizadas en src/index.css */
+
 
 /* Estilos generales del body */
 body{
@@ -797,6 +787,62 @@ input {
 .fecha {
     display: flex;
     gap: 10px;
+}
+
+/* ==========================
+   MODAL: ajustes de color respetando variables globales
+   ==========================
+*/
+.modal overlay uses rgba to dim background while keeping primary intact
+.modal and .modal-contenido use theme variables from index.css
+.modal { background-color: rgba(0,0,0,0.6); }
+
+.modal-contenido {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--primary);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.modal-contenido h4 {
+    color: var(--primary);
+}
+
+.modal-contenido .cerrar {
+    color: var(--primary);
+}
+
+.modal-contenido form {
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    width: 100%;
+}
+
+.modal-contenido form input,
+.modal-contenido form textarea {
+    background: rgba(0,0,0,0.04);
+    color: var(--text);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.modal-contenido form button {
+    background: var(--primary);
+    color: var(--primary-contrast);
+    border: none;
+}
+
+.toggle-password,
+.modal-contenido .toggle-password {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    background: transparent;
+}
+
+.cerrar:hover {
+    color: var(--primary-dark);
 }
 
 /* CHECKBOX */

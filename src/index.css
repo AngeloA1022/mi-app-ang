@@ -3,6 +3,13 @@
   --text-h: #08060d;
   --bg: #fff;
   --border: #e5e4e7;
+  /* Palette and app-specific variables (shared with App.css) */
+  --primary: #0ebd80;
+  --primary-dark: #105d48;
+  --blue: #4169E1;
+  --primary-contrast: #ffffff;
+  --nav-height: 80px;
+  --nav-bg: rgba(255,255,255,0.95);
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
