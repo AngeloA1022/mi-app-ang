@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Bienvenida from "./components/Bienvenida";
 import Inicio from "./components/Inicio";
 import Contacto from "./components/Contacto";
+import Registro from "./components/Registro";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element={<Bienvenida />} />
         <Route path='/inicio' element={<Inicio />} />
         <Route path='/contacto' element={<Contacto />} />
+        <Route path='/Registro' element={<Registro />} />
       </Routes>
     </BrowserRouter>
   );

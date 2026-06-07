@@ -17,6 +17,10 @@ export default function Navbar() {
         <li>
           <Link to="/contacto">Contacto</Link>
         </li>
+
+
+        <li><Link to="/Registro">Registro</Link></li>
+        <li><Link to="/login">Login</Link></li>
       </ul>
     </nav>
   );
