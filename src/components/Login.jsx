@@ -2,81 +2,120 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState("");
+  // Estado para controlar la visibilidad del modal
+  const [isOpen, setIsOpen] = useState(false);
 
-  const validate = () => {
-    const nextErrors = {};
+  // Estado para manejar los mensajes de error/éxito en tiempo real de forma dinámica
+  const [errores, setErrores] = useState([]);
+  const [loginExitoso, setLoginExitoso] = useState(false);
 
-    if (!email.trim()) {
-      nextErrors.email = "El correo es obligatorio.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      nextErrors.email = "Ingresa un correo válido.";
-    }
-
-    if (!password) {
-      nextErrors.password = "La contraseña es obligatoria.";
-    } else if (password.length < 6) {
-      nextErrors.password = "La contraseña debe tener al menos 6 caracteres.";
-    }
-
-    setErrors(nextErrors);
-    return Object.keys(nextErrors).length === 0;
+  const abrirModal = () => setIsOpen(true);
+  
+  const cerrarModal = () => {
+    setIsOpen(false);
+    setErrores([]);
+    setLoginExitoso(false);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const manejarLogin = (event) => {
+    // ● Validación Preventiva: Uso obligatorio de event.preventDefault()
+    event.preventDefault();
 
-    if (!validate()) {
-      setMessage("");
-      return;
+    // ● Manipulación del DOM: Captura de valores mediante document.getElementById
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+
+    let listaErrores = [];
+
+    // Validar que los campos no estén vacíos
+    if (!email || !password) {
+      listaErrores.push("Todos los campos son obligatorios.");
     }
 
-    setMessage("Inicio de sesión exitoso.");
+    // ● Validar que el email tenga un formato válido (regex)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      listaErrores.push("El formato del correo electrónico no es válido.");
+    }
+
+    // ● Feedback en Tiempo Real: Renderizado dinámico en la pantalla
+    if (listaErrores.length > 0) {
+      setErrores(listaErrores);
+      setLoginExitoso(false);
+    } else {
+      setErrores([]);
+      setLoginExitoso(true);
+      
+      // Limpieza del formulario tras un login exitoso utilizando el DOM
+      document.getElementById("form-login").reset();
+    }
   };
 
   return (
-    <section className="registro">
+    <section id="inicio" className="inicio">
       <div className="container">
-        <h2>Login</h2>
-        <p>Ingresa tus datos para acceder.</p>
-      </div>
+        
+        {/* Botón para abrir el modal */}
+        <button onClick={abrirModal} className="btn-abrir-modal">
+          Iniciar Sesión
+        </button>
 
-      <div className="modal" style={{ display: "flex" }}>
-        <div className="modal-contenido">
-          <h4>Login</h4>
+        {/* ESTRUCTURA DEL MODAL (Condicional) */}
+        {isOpen && (
+          <div className="modal-overlay" onClick={cerrarModal}>
+            {/* e.stopPropagation() evita que el modal se cierre al hacer click dentro del formulario */}
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              
+              <button className="modal-close-btn" onClick={cerrarModal}>
+                &times;
+              </button>
 
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              id="email"
-              placeholder="Correo"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={errors.email ? "input-error" : "input-ok"}
-            />
-            <small className="error">{errors.email}</small>
+              <h2>Iniciar Sesión</h2>
+              
+              <form id="form-login" onSubmit={manejarLogin}>
+                <div className="form-group">
+                  <label htmlFor="login-email">Email:</label>
+                  <input type="text" id="login-email" name="email" />
+                </div>
 
-            <input
-              type="password"
-              id="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={errors.password ? "input-error" : "input-ok"}
-            />
-            <small className="error">{errors.password}</small>
+                <div className="form-group">
+                  <label htmlFor="login-password">Contraseña:</label>
+                  <input type="password" id="login-password" name="password" />
+                </div>
 
-            <button type="submit">Iniciar sesión</button>
-            <p>{message}</p>
-          </form>
+                <button type="submit" className="btn-submit">Ingresar</button>
+              </form>
 
-          <p style={{ marginTop: "10px", textAlign: "center" }}>
-            ¿No tienes cuenta? <Link to="/Registro">Regístrate</Link>
-          </p>
-        </div>
+              {/* Elementos HTML dinámicos para feedback de errores */}
+              {errores.length > 0 && (
+                <div className="errores-feedback">
+                  <ul>
+                    {errores.map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Elemento HTML dinámico para feedback de éxito */}
+              {loginExitoso && (
+                <div className="exito-feedback">
+                  <strong>¡Ingreso completado con éxito!</strong>
+                </div>
+              )}
+
+            </div>
+          </div>
+        )}
+
+        {/* Sección de Enlaces */}
+        <section>
+          <div className="enlaces">
+            <h2>Enlaces Útiles</h2>
+            <Link to="/">Volver a Inicio</Link>
+          </div>
+        </section>
+        
       </div>
     </section>
   );
