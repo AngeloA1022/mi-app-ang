@@ -371,8 +371,8 @@ section h2 {
 
 /* Botón general */
 .button { 
-    background-color: var(--primary); 
-    color: black; 
+    background-color: black; 
+    color: var(--primary); 
     padding: 10px 16px; 
     border: none; 
     border-radius: 5px; 
@@ -382,8 +382,8 @@ section h2 {
 
 /* Boton de Unirse */
 .btn-unete {
-    background-color: var(--primary);
-    color: black;
+    background-color: black;
+    color: var(--primary);
     padding: 12px 24px;
     justify-content: center;
     align-items: center;
@@ -424,7 +424,8 @@ section h2 {
 
 /* Hover de botón */
 .button:hover { 
-    background-color: #45a049; 
+    background-color: var(--primary-dark); 
+    color: var(--primary);
 }
 
 /* Navbar con altura dinámica */
@@ -554,10 +555,10 @@ form textarea:focus {
 form button {
     width: 100%;
     padding: 12px;
-    background: var(--primary);
+    background: black;
     border: none;
     border-radius: 8px;
-    color: black;
+    color: var(--primary);
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
@@ -813,7 +814,7 @@ input {
 }
 
 .modal-contenido form {
-    background: transparent;
+    background: rgba(0,0,0,0.04);
     padding: 0;
     box-shadow: none;
     width: 100%;
@@ -829,8 +830,8 @@ input {
 }
 
 .modal-contenido form button {
-    background: var(--primary);
-    color: var(--primary-contrast);
+    background: black;
+    color: var(--primary);
     border: none;
 }
 
@@ -856,14 +857,14 @@ button {
     padding: 12px;
     border-radius: 25px;
     border: 2px solid var(--primary);
-    background: transparent;
+    background: black;
     cursor: pointer;
-    color: var(--primary-contrast);
+    color: var(--primary);
 }
 
 button:hover {
     background: var(--primary);
-    color: var(--primary-contrast);
+    color: black;
 }
 
 /* MENSAJE */
@@ -963,7 +964,8 @@ button:hover {
     top: 50%;
     transform: translateY(-50%);
 
-    background: var(--primary);
+    background: black;
+    color: var(--primary);
     border: none;
     padding: 12px 15px;
     cursor: pointer;
@@ -976,7 +978,8 @@ button:hover {
 
 /* Hover botones */
 .carrusel-container button:hover {
-    background: var(--primary-dark);
+    background: var(--primary);
+    color: black;
     transform: translateY(-50%) scale(1.1);
 }
 
