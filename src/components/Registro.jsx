@@ -136,7 +136,7 @@ export default function Registro() {
   };
 
   return (
-    <section id="inicio" className="inicio">
+    <section id="registro" className="inicio">
       <div className="container">
         
         <button onClick={abrirModal} className="btn-abrir-modal">

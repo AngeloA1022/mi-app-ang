@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import blastoise from '../images/blastoise.png';
+import charizard from '../images/charizard.png';
+import pikachu from '../images/pikachu.png';
+import venusaur from '../images/venusaur.png';
 
 export default function Personajes() {
 
@@ -16,7 +19,7 @@ export default function Personajes() {
     {
       id: "blastoise",
       nombre: "Blastoise",
-      img: "/images/blastoise.png",
+      img: blastoise,
       descripcion: "Gran defensa y control de zona.",
       ataques1: ["Hidrobomba", "Salpicadura"],
       ataques2: ["Surf", "Giro Rápido"],
@@ -29,7 +32,7 @@ export default function Personajes() {
     {
       id: "charizard",
       nombre: "Charizard",
-      img: "/images/charizard.png",
+      img: charizard,
       descripcion: "Alto daño y movilidad.",
       ataques1: ["Lanzallamas", "Puño Fuego"],
       ataques2: ["Envite Ígneo", "Llamarada"],
@@ -38,7 +41,7 @@ export default function Personajes() {
     {
       id: "pikachu",
       nombre: "Pikachu",
-      img: "/images/pikachu.png",
+      img: pikachu,
       descripcion: "Ataques eléctricos rápidos.",
       ataques1: ["Impactrueno", "Electrotela"],
       ataques2: ["Rayo", "Trueno"],
@@ -51,7 +54,7 @@ export default function Personajes() {
     {
       id: "venusaur",
       nombre: "Venusaur",
-      img: "/images/venusaur.png",
+      img: venusaur,
       descripcion: "Buen balance entre ataque y resistencia.",
       ataques1: ["Bomba Lodo", "Drenadoras"],
       ataques2: ["Rayo Solar", "Gigadrenado"],

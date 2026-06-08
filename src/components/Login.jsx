@@ -110,7 +110,7 @@ export default function Login() {
   };
 
   return (
-    <section id="inicio" className="inicio">
+    <section id="login" className="inicio">
       <div className="container">
         
         <button onClick={abrirModal} className="btn-abrir-modal">
