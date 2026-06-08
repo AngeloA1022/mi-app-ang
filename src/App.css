@@ -994,6 +994,93 @@ button:hover {
 }
 
 /* ===================== */
+/* CARRUSEL PERSONAJES */
+/* ===================== */
+.personajes {
+    text-align: center;
+    padding: 40px;
+}
+
+/* CONTENEDOR */
+.carousel {
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+    overflow: hidden;
+    position: relative;
+}
+
+/* TRACK */
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+/* CARD */
+.card {
+    min-width: 100%;
+    background: #111;
+    padding: 20px;
+    text-align: center;
+
+    opacity: 0.5;
+    transform: scale(0.95);
+    transition: 0.4s;
+}
+
+.card.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* IMG */
+.img {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+/* BOTONES INTERNOS */
+.buttons button {
+    margin: 5px;
+    padding: 6px 10px;
+    border: none;
+    background: var(--primary);
+    color: black;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 🔥 BOTONES DEL CARRUSEL */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background: black;
+    color: var(--primary);
+    border: none;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 20px;
+
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.nav-btn:hover {
+    background: var(--primary);
+    color: black;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+/* ===================== */
 /* VALIDACIÓN FORMULARIOS */
 /* ===================== */
 

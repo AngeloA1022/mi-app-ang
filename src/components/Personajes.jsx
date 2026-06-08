@@ -6,15 +6,17 @@ import venusaur from '../images/venusaur.png';
 
 export default function Personajes() {
 
-  // 🔹 Estados para mostrar info (por Pokémon)
   const [open, setOpen] = useState(null);
 
-  // 🔹 Función para abrir/cerrar secciones
+  const [indexDef, setIndexDef] = useState(0);
+  const [indexAtk, setIndexAtk] = useState(0);
+  const [indexEq, setIndexEq] = useState(0);
+
   const toggle = (id) => {
     setOpen(open === id ? null : id);
   };
 
-  // 🛡️ DEFENSIVOS
+  // DATA
   const defensivos = [
     {
       id: "blastoise",
@@ -27,7 +29,6 @@ export default function Personajes() {
     }
   ];
 
-  // ⚔️ ATACANTES
   const atacantes = [
     {
       id: "charizard",
@@ -49,7 +50,6 @@ export default function Personajes() {
     }
   ];
 
-  // ⚖️ EQUILIBRADOS
   const equilibrados = [
     {
       id: "venusaur",
@@ -62,87 +62,93 @@ export default function Personajes() {
     }
   ];
 
-  // 🔹 Función para renderizar cada Pokémon
-  const renderPokemon = (poke) => (
-    <div key={poke.id} className="card">
+  // 🔥 CARRUSEL REUTILIZABLE
+  const Carousel = ({ data, index, setIndex }) => {
 
-      {/* Nombre */}
-      <h3>{poke.nombre}</h3>
+    const next = () => {
+      if (index < data.length - 1) setIndex(index + 1);
+    };
 
-      {/* Imagen */}
-      <img src={poke.img} alt={poke.nombre} className="img"/>
+    const prev = () => {
+      if (index > 0) setIndex(index - 1);
+    };
 
-      {/* Botones */}
-      <div className="buttons">
-        <button onClick={() => toggle(poke.id + "-desc")}>
-          Descripción
-        </button>
+    return (
+      <div className="carousel">
 
-        <button onClick={() => toggle(poke.id + "-atk1")}>
-          Ataque 1
-        </button>
+        {/* 🔥 BOTÓN PREV SOLO SI SE PUEDE */}
+        {index > 0 && (
+          <button onClick={prev} className="nav-btn prev">⬅</button>
+        )}
 
-        <button onClick={() => toggle(poke.id + "-atk2")}>
-          Ataque 2
-        </button>
+        <div
+          className="carousel-track"
+          style={{ transform: `translateX(-${index * 100}%)` }}
+        >
+          {data.map((poke, i) => (
+            <div
+              key={poke.id}
+              className={`card ${i === index ? "active" : ""}`}
+            >
+              <h3>{poke.nombre}</h3>
 
-        <button onClick={() => toggle(poke.id + "-set")}>
-          Set
-        </button>
+              <img src={poke.img} alt={poke.nombre} className="img"/>
+
+              <div className="buttons">
+                <button onClick={() => toggle(poke.id + "-desc")}>Descripción</button>
+                <button onClick={() => toggle(poke.id + "-atk1")}>Ataque 1</button>
+                <button onClick={() => toggle(poke.id + "-atk2")}>Ataque 2</button>
+                <button onClick={() => toggle(poke.id + "-set")}>Set</button>
+              </div>
+
+              {open === poke.id + "-desc" && <p>{poke.descripcion}</p>}
+
+              {open === poke.id + "-atk1" && (
+                <div>{poke.ataques1.map((atk) => <p key={atk}>{atk}</p>)}</div>
+              )}
+
+              {open === poke.id + "-atk2" && (
+                <div>{poke.ataques2.map((atk) => <p key={atk}>{atk}</p>)}</div>
+              )}
+
+              {open === poke.id + "-set" && (
+                <p><strong>{poke.set}</strong></p>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* 🔥 BOTÓN NEXT SOLO SI SE PUEDE */}
+        {index < data.length - 1 && (
+          <button onClick={next} className="nav-btn next">➡</button>
+        )}
+
       </div>
-
-      {/* CONTENIDO DINÁMICO */}
-
-      {open === poke.id + "-desc" && (
-        <p>{poke.descripcion}</p>
-      )}
-
-      {open === poke.id + "-atk1" && (
-        <div>
-          {poke.ataques1.map((atk) => (
-            <p key={atk}>{atk}</p>
-          ))}
-        </div>
-      )}
-
-      {open === poke.id + "-atk2" && (
-        <div>
-          {poke.ataques2.map((atk) => (
-            <p key={atk}>{atk}</p>
-          ))}
-        </div>
-      )}
-
-      {open === poke.id + "-set" && (
-        <p><strong>{poke.set}</strong></p>
-      )}
-
-    </div>
-  );
+    );
+  };
 
   return (
-    <div className="personajes">
+    <section id="personajes">
+      <div className="personajes">
 
-      <h1>Personajes</h1>
+        <h1>Personajes</h1>
 
-      {/* 🛡️ DEFENSIVOS */}
-      <h2>🛡️ Defensivos</h2>
-      <div className="grid">
-        {defensivos.map(renderPokemon)}
+        <section>
+          <h2>🛡️ Defensivos</h2>
+          <Carousel data={defensivos} index={indexDef} setIndex={setIndexDef}/>
+        </section>
+
+        <section>
+          <h2>⚔️ Atacantes</h2>
+          <Carousel data={atacantes} index={indexAtk} setIndex={setIndexAtk}/>
+        </section>
+
+        <section>
+          <h2>⚖️ Equilibrados</h2>
+          <Carousel data={equilibrados} index={indexEq} setIndex={setIndexEq}/>
+        </section>
+
       </div>
-
-      {/* ⚔️ ATACANTES */}
-      <h2>⚔️ Atacantes</h2>
-      <div className="grid">
-        {atacantes.map(renderPokemon)}
-      </div>
-
-      {/* ⚖️ EQUILIBRADOS */}
-      <h2>⚖️ Equilibrados</h2>
-      <div className="grid">
-        {equilibrados.map(renderPokemon)}
-      </div>
-
-    </div>
+    </section>
   );
 }
