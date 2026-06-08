@@ -6,8 +6,8 @@ const USUARIOS_KEY = "usuariosPokemonUnite";
 export default function Registro() {
   const [isOpen, setIsOpen] = useState(false);
   const [usuarios, setUsuarios] = useState([]);
+  const [mostrarPassword, setMostrarPassword] = useState(false);
 
-  // Control de strings del formulario
   const [valores, setValores] = useState({
     usuario: "",
     email: "",
@@ -15,7 +15,6 @@ export default function Registro() {
     confirmPassword: "",
   });
 
-  // Control de interacción para activar los textos de error individualmente
   const [tocados, setTocados] = useState({
     usuario: false,
     email: false,
@@ -25,120 +24,135 @@ export default function Registro() {
 
   const [mensajeGlobal, setMensajeGlobal] = useState({ texto: "", color: "" });
 
-  // Cargar base de datos local al iniciar
+  // Cargar usuarios desde localStorage
   useEffect(() => {
     const data = localStorage.getItem(USUARIOS_KEY);
     if (data) {
       try {
         const parsed = JSON.parse(data);
         if (Array.isArray(parsed)) setUsuarios(parsed);
-      } catch (e) {
+      } catch {
         setUsuarios([]);
       }
     }
   }, []);
 
+  // Autofocus al abrir modal
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        document.getElementById("usuario")?.focus();
+      }, 100);
+    }
+  }, [isOpen]);
+
   const abrirModal = () => setIsOpen(true);
-  
+
   const cerrarModal = () => {
     setIsOpen(false);
     setValores({ usuario: "", email: "", password: "", confirmPassword: "" });
     setTocados({ usuario: false, email: false, password: false, confirmPassword: false });
     setMensajeGlobal({ texto: "", color: "" });
+    setMostrarPassword(false);
   };
 
-  // --- FUNCIONES DE VALIDACIÓN ---
-  const campoVacio = (valor) => valor.trim() === "";
+  // VALIDACIONES
+  const campoVacio = (v) => v.trim() === "";
 
   const obtenerErrorEmail = (email) => {
     if (campoVacio(email)) return "El correo es obligatorio";
     if (!/@/.test(email)) return "Debe contener @";
     if (!/^[^\s@]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email)) return "Formato incorrecto";
-    if (!/\.(com|cl|net|org)$/i.test(email)) {
-      return "Solo se permiten dominios con extensión .com, .cl, .net o .org";
-    }
+    if (!/\.(com|cl|net|org)$/i.test(email)) return "Solo .com, .cl, .net o .org";
     return "";
   };
 
   const obtenerErrorPassword = (password) => {
     if (campoVacio(password)) return "La contraseña es obligatoria";
     const errores = [];
-    if (password.length < 8) errores.push("Mínimo 8 caracteres");
-    if (!/[A-Za-z]/.test(password)) errores.push("al menos una letra");
-    if (!/\d/.test(password)) errores.push("al menos un número");
-    if (!/[@$!%*?&_#]/.test(password)) errores.push("al menos un carácter especial (@$!%*?&_#)");
-    
-    return errores.length > 0 ? "Necesita: " + errores.join(", ") : "";
+    if (password.length < 8) errores.push("mín. 8 caracteres");
+    if (!/[A-Za-z]/.test(password)) errores.push("una letra");
+    if (!/\d/.test(password)) errores.push("un número");
+    if (!/[@$!%*?&_#]/.test(password)) errores.push("un símbolo");
+
+    return errores.length ? "Debe tener: " + errores.join(", ") : "";
   };
 
-  // --- EVALUACIÓN EN TIEMPO REAL ---
   const erroresValidacion = {
-    usuario: campoVacio(valores.usuario) 
-      ? "Campo obligatorio" 
-      : valores.usuario.length < 3 ? "Mínimo 3 caracteres" : "",
+    usuario: campoVacio(valores.usuario)
+      ? "Campo obligatorio"
+      : valores.usuario.length < 3
+      ? "Mínimo 3 caracteres"
+      : "",
     email: obtenerErrorEmail(valores.email),
     password: obtenerErrorPassword(valores.password),
-    confirmPassword: valores.password !== valores.confirmPassword 
-      ? "Las contraseñas no coinciden" 
-      : campoVacio(valores.confirmPassword) ? "Campo obligatorio" : ""
+    confirmPassword:
+      campoVacio(valores.confirmPassword)
+        ? "Campo obligatorio"
+        : valores.password !== valores.confirmPassword
+        ? "Las contraseñas no coinciden"
+        : "",
   };
 
   const manejarInputChange = (e) => {
     const { name, value } = e.target;
-    setValores(prev => ({ ...prev, [name]: value }));
+    setValores((prev) => ({ ...prev, [name]: value }));
   };
 
   const manejarBlur = (e) => {
     const { name } = e.target;
-    setTocados(prev => ({ ...prev, [name]: true }));
+    setTocados((prev) => ({ ...prev, [name]: true }));
   };
 
-  // --- SUBMIT DEL FORMULARIO ---
-  const manejarRegistro = (event) => {
-    event.preventDefault();
+  const manejarRegistro = (e) => {
+    e.preventDefault();
 
-    // Activar todos los feedbacks simultáneamente al intentar enviar
-    setTocados({ usuario: true, email: true, password: true, confirmPassword: true });
+    setTocados({
+      usuario: true,
+      email: true,
+      password: true,
+      confirmPassword: true,
+    });
 
-    const tieneErrores = Object.values(erroresValidacion).some(error => error !== "");
+    const tieneErrores = Object.values(erroresValidacion).some((e) => e !== "");
 
     if (tieneErrores) {
       setMensajeGlobal({ texto: "Corrige los errores", color: "red" });
       return;
     }
 
-    const existe = usuarios.find(u => u.email === valores.email.trim());
+    const existe = usuarios.find((u) => u.email === valores.email.trim());
     if (existe) {
       setMensajeGlobal({ texto: "El correo ya está registrado", color: "orange" });
       return;
     }
 
-    const nuevosUsuarios = [...usuarios, { 
-      usuario: valores.usuario.trim(), 
-      email: valores.email.trim(), 
-      password: valores.password.trim() 
-    }];
-    
+    const nuevosUsuarios = [
+      ...usuarios,
+      {
+        usuario: valores.usuario.trim(),
+        email: valores.email.trim(),
+        password: valores.password.trim(),
+      },
+    ];
+
     setUsuarios(nuevosUsuarios);
     localStorage.setItem(USUARIOS_KEY, JSON.stringify(nuevosUsuarios));
 
     setMensajeGlobal({ texto: "Registro exitoso", color: "#00ff88" });
 
-    setTimeout(() => {
-      cerrarModal();
-    }, 1000);
+    setTimeout(cerrarModal, 1000);
   };
 
-  // Generador dinámico de clases según el estado de validación
   const obtenerClaseInput = (campo) => {
-    if (!tocados[campo]) return ""; 
+    if (!tocados[campo]) return "";
     return erroresValidacion[campo] ? "input-error" : "input-ok";
   };
 
   return (
-    <section id="registro" className="inicio">
+    <section className="inicio">
       <div className="container">
-        
+
         <button onClick={abrirModal} className="btn-abrir-modal">
           Registrarse
         </button>
@@ -146,109 +160,128 @@ export default function Registro() {
         {isOpen && (
           <div className="modal-overlay" onClick={cerrarModal}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              
+
               <button className="modal-close-btn" onClick={cerrarModal}>
                 &times;
               </button>
 
-              <h2>Formulario de Registro</h2>
-              
-              <form id="registroForm" onSubmit={manejarRegistro}>
-                
+              <h2>Registro</h2>
+
+              <form onSubmit={manejarRegistro}>
+
+                {/* USUARIO */}
                 <div className="form-group">
-                  <label htmlFor="usuario">Usuario:</label>
-                  <input 
-                    type="text" 
-                    id="usuario" 
-                    name="usuario" 
+                  <label>Usuario</label>
+                  <input
+                    type="text"
+                    name="usuario"
+                    id="usuario"
+                    placeholder="Ej: PikachuMaster"
                     value={valores.usuario}
                     onChange={manejarInputChange}
                     onBlur={manejarBlur}
                     className={obtenerClaseInput("usuario")}
                   />
+                  <small>Mínimo 3 caracteres</small>
+
                   {tocados.usuario && (
-                    <span id="errorUsuario" style={{ color: erroresValidacion.usuario ? "red" : "#00ff88" }}>
-                      {erroresValidacion.usuario || "Correcto"}
+                    <span style={{ color: erroresValidacion.usuario ? "red" : "#00ff88" }}>
+                      {erroresValidacion.usuario || "✓ Correcto"}
                     </span>
                   )}
                 </div>
 
+                {/* EMAIL */}
                 <div className="form-group">
-                  <label htmlFor="emailRegistro">Email:</label>
-                  <input 
-                    type="text" 
-                    id="emailRegistro" 
-                    name="email" 
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Ej: usuario@gmail.com"
                     value={valores.email}
                     onChange={manejarInputChange}
                     onBlur={manejarBlur}
                     className={obtenerClaseInput("email")}
                   />
+                  <small>Formato válido</small>
+
                   {tocados.email && (
-                    <span id="errorEmail" style={{ color: erroresValidacion.email ? "red" : "#00ff88" }}>
+                    <span style={{ color: erroresValidacion.email ? "red" : "#00ff88" }}>
                       {erroresValidacion.email || "✓ Correcto"}
                     </span>
                   )}
                 </div>
 
+                {/* PASSWORD */}
                 <div className="form-group">
-                  <label htmlFor="password">Contraseña:</label>
-                  <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
+                  <label>Contraseña</label>
+                  <input
+                    type={mostrarPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Ej: Pikachu@123"
                     value={valores.password}
                     onChange={manejarInputChange}
                     onBlur={manejarBlur}
                     className={obtenerClaseInput("password")}
                   />
+
+                  <div className="checkbox-group">
+                    <input
+                      type="checkbox"
+                      checked={mostrarPassword}
+                      onChange={() => setMostrarPassword(!mostrarPassword)}
+                    />
+                    <label>Mostrar contraseña</label>
+                  </div>
+
+                  <small>Debe incluir letras, números y símbolos</small>
+
                   {tocados.password && (
-                    <span id="errorPassword" style={{ color: erroresValidacion.password ? "red" : "#00ff88" }}>
-                      {erroresValidacion.password || "✓ Contraseña segura"}
+                    <span style={{ color: erroresValidacion.password ? "red" : "#00ff88" }}>
+                      {erroresValidacion.password || "✓ Segura"}
                     </span>
                   )}
                 </div>
 
+                {/* CONFIRM PASSWORD */}
                 <div className="form-group">
-                  <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
-                  <input 
-                    type="password" 
-                    id="confirmPassword" 
-                    name="confirmPassword" 
+                  <label>Confirmar contraseña</label>
+                  <input
+                    type={mostrarPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Repite tu contraseña"
                     value={valores.confirmPassword}
                     onChange={manejarInputChange}
                     onBlur={manejarBlur}
                     className={obtenerClaseInput("confirmPassword")}
                   />
+
+                  <small>Debe coincidir</small>
+
                   {tocados.confirmPassword && (
-                    <span id="errorConfirmPassword" style={{ color: erroresValidacion.confirmPassword ? "red" : "#00ff88" }}>
-                      {erroresValidacion.confirmPassword || "Coinciden"}
+                    <span style={{ color: erroresValidacion.confirmPassword ? "red" : "#00ff88" }}>
+                      {erroresValidacion.confirmPassword || "✓ Coinciden"}
                     </span>
                   )}
                 </div>
 
-                <button type="submit" className="btn-submit">Registrarse</button>
+                <button type="submit" className="btn-submit">
+                  Registrarse
+                </button>
               </form>
 
               {mensajeGlobal.texto && (
-                <div id="mensajeRegistro" style={{ color: mensajeGlobal.color }}>
+                <div style={{ color: mensajeGlobal.color }}>
                   {mensajeGlobal.texto}
                 </div>
               )}
-
             </div>
           </div>
         )}
 
-        <section>
-          <div className="enlaces">
-            <h2>Enlaces Útiles</h2>
-            <Link to="/">Volver a Inicio</Link>
-          </div>
-        </section>
-        
+        <Link to="/">Volver</Link>
+
       </div>
     </section>
   );
 }
-
