@@ -1,15 +1,17 @@
-/* Paleta accesible (WCAG AA)
-     Contraste esperado (aprox.):
-         - --bg vs --text: 15.9:1  (cumple AA y AAA para texto normal)
-         - --primary vs --primary-contrast: 5.3:1  (cumple AA para texto normal)
-         - --primary sobre --bg: 5.3:1  (cumple AA)
+/* ==========================================================================
+   PALETA ACCESIBLE (WCAG AA) Y VARIABLES
+   ========================================================================== */
+/* Contraste esperado (aprox.):
+     - --bg vs --text: 15.9:1  (cumple AA y AAA para texto normal)
+     - --primary vs --primary-contrast: 5.3:1  (cumple AA para texto normal)
+     - --primary sobre --bg: 5.3:1  (cumple AA)
 
-         Variables:         --bg: fondo principal
-         --text: color de texto principal sobre el fondo
-         --primary: color principal de botones/elementos
-         --primary-contrast: color del texto sobre el botón primario
+   Variables:
+     - --bg: fondo principal
+     - --text: color de texto principal sobre el fondo
+     - --primary: color principal de botones/elementos
+     - --primary-contrast: color del texto sobre el botón primario
 */
-
 
 /* Activa desplazamiento suave en toda la página */
 html {
@@ -18,70 +20,62 @@ html {
 
 * {
     box-sizing: border-box;
-
 }
 
-/* Variables globales centralizadas en src/index.css */
-
-
 /* Estilos generales del body */
-body{
-    font-family: Arial, Helvetica, sans-serif; /* tipografía */
-    min-height: 100vh; /* altura completa */
-    width: 100vw; /* ancho completo */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    width: 100vw;
     margin: 0;
     background-color: var(--bg);
-    background-image: url("./images/fondo.jpg"); /* imagen de fondo */
-    background-attachment: fixed; /* fondo fijo al hacer scroll */
-    scroll-behavior: smooth; /* scroll suave */
-    background-position: center; /* centra la imagen */
-    color: var(--text); /* color del texto */
-    background-size: cover; /* cubre toda la pantalla */
+    background-image: url("./images/fondo.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    color: var(--text);
     line-height: 1.55;
     text-rendering: optimizeLegibility;
 }
 
-/* Encabezado principal */
-header{
+/* ==========================================================================
+   HEADER Y LOGO
+   ========================================================================== */
+header {
     position: relative;
-    background-color: rgba(0, 0, 0, 0.8); /* fondo oscuro semi-transparente */
-    color: white; /* texto blanco */
-    padding: 20px; /* espacio interno */
-    text-align: center; /* centra texto */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    text-align: center;
     align-items: center;
-    border: center;
-    max-width: 1200px; /* ancho máximo */
-    margin:0 auto; /* centrado */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Contenedor del logo */
 .logo {
     position: relative;
     display: block;
     padding: 6px 0;
 }
 
-/* Título dentro del logo */
 .logo h1 {
     margin: 0;
 }
 
-/* Imagen del logo */
 .logo-img {
     position: absolute;
-    left: 20px; /* posición izquierda */
-    top: 50%; /* centrado vertical */
+    left: 20px;
+    top: 50%;
     transform: translateY(-50%);
-    width: 120px; /* tamaño */
+    width: 120px;
     height: auto;
     display: block;
     margin: 0;
-
 }
 
-
-
-/* Barra de navegación */
+/* ==========================================================================
+   NAVEGACIÓN (NAVBAR)
+   ========================================================================== */
 nav {
     position: sticky;
     top: 0;
@@ -89,46 +83,48 @@ nav {
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-
     display: flex;
     justify-content: center;
     align-items: center;
+    height: var(--nav-height);
+    transition: height 0.3s ease, background-color 0.3s ease;
 }
 
-/* Lista del menú */
+nav.scrolled {
+    --nav-height: 60px;
+    --nav-bg: rgba(255, 255, 255, 0.98);
+    background-color: var(--nav-bg);
+}
+
 nav ul {
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
-
-    justify-content: center; /* antes: space-between */
-
+    justify-content: center;
     align-items: center;
-    gap: 20px; /* 🔥 separación moderna */
-    
+    gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
     list-style: none;
-    
     background-color: transparent;
     padding: 20px;
     width: 85%;
 }
 
-/* Contenedor general */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-/* Links del menú */
 nav ul li a {
     color: black;
-    text-decoration: none; /* sin subrayado */
+    text-decoration: none;
     font-size: 1.2rem;
     font-weight: bold;
     padding: 0.65rem 1rem;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
     border-radius: 999px;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+    background-color: var(--accent);
+    color: var(--primary);
+    transform: translateY(-1px);
 }
 
 .nav-btn {
@@ -148,23 +144,20 @@ nav ul li a {
     transform: translateY(-1px);
 }
 
-nav ul li a:hover,
-nav ul li a:focus {
-    background-color: var(--accent);
-    color: var(--primary);
-    transform: translateY(-1px);
+/* ==========================================================================
+   ESTRUCTURA GENERAL Y SECCIONES
+   ========================================================================== */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-/* Secciones */
 section {
-    background-color: rgba(255, 255, 255, 0.85); /* blanco semi-transparente */
+    background-color: rgba(255, 255, 255, 0.85);
     padding: 24px;
     margin: 20px auto;
     border-radius: 18px;
     width: 85%;
-    box-shadow: none;
-    backdrop-filter: none;
-    border: none;
 }
 
 section h2 {
@@ -174,6 +167,13 @@ section h2 {
     letter-spacing: 0.02em;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Bienvenido / Inicio */
 .bienvenida {
     text-align: center;
 }
@@ -276,21 +276,18 @@ section h2 {
     text-decoration: underline;
 }
 
-/* Contenedor repetido */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-/* Contenedor de imágenes de consejos */
-.imagenes-consejos {
+/* ==========================================================================
+   MULTIMEDIA / IMÁGENES
+   ========================================================================== */
+.imagenes-consejos,
+.imagenes-mapas,
+.imagenes-objetos {
     display: flex;
     justify-content: space-around;
     align-items: center;
     margin: 0 auto 20px;
 }
 
-/* Imágenes de consejos */
 .consejo-img {
     width: 35%;
     height: auto;
@@ -299,23 +296,6 @@ section h2 {
     margin: 10px auto 20px;
 }
 
-/* Contenedor de mapas */
-.imagenes-mapas {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 0 auto 20px;
-}
-
-/* Contenedor de objetos */
-.imagenes-objetos {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 0 auto 20px;
-}
-
-/* Imagen de objeto */
 .objeto-img {
     width: 15%;
     height: auto;
@@ -324,7 +304,6 @@ section h2 {
     margin: 10px auto;
 }
 
-/* Imagen de mapa */
 .mapa-img {
     width: 50%;
     height: auto;
@@ -333,42 +312,19 @@ section h2 {
     margin: 15px auto 20px;
 }
 
-/* Imagen dentro de tarjeta */
-.card img {
-    width: 30%;
-    height: auto;
-    border-radius: 10px;
-}
+/* Imagen dentro de tarjeta independiente */
+.card-content img {
+    width: 30%; 
+    height: auto; 
+    border-radius: 10px; 
+} 
 
-
-
-/* Tarjetas */
-
-.card {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    margin: 10px auto;
-    border-radius: 15px;
-    width: 85%;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    border: 1px solid rgba(46,196,182,0.12);
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.12);
-    border-color: transparent;
-}
-
-/* Contenido interno de tarjeta */
 .card-content {
     display: flex;
     align-items: center;
     margin: 10px 0;
 }
 
-/* Botones dentro de tarjeta */
 .card-buttons {
     display: flex;
     flex-wrap: nowrap;
@@ -376,18 +332,24 @@ section h2 {
     margin-left: 10px;
 }
 
-/* Botón general */
-.button {
-    background-color: black;
-    color: var(--primary);
-    padding: 10px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+/* ==========================================================================
+   BOTONES GENERALES
+   ========================================================================== */
+.button { 
+    background-color: black; 
+    color: var(--primary); 
+    padding: 10px 16px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 16px; 
 }
 
-/* Boton de Unirse */
+.button:hover { 
+    background-color: var(--primary-dark); 
+    color: var(--primary);
+}
+
 .btn-unete {
     background-color: black;
     color: var(--primary);
@@ -398,9 +360,6 @@ section h2 {
     border-radius: 5px;
 }
 
-
-
-/* Botón de ataque */
 .attack-button {
     background-color: #c0392b;
     color: black;
@@ -415,7 +374,6 @@ section h2 {
     background-color: #a93226;
 }
 
-/* Botón de set */
 .set-button {
     background-color: #2e86c1;
     color: black;
@@ -429,83 +387,9 @@ section h2 {
     background-color: #2874a6;
 }
 
-/* Hover de botón */
-.button:hover {
-    background-color: var(--primary-dark);
-    color: var(--primary);
-}
-
-/* Navbar con altura dinámica */
-nav {
-  height: var(--nav-height);
-  transition: height 0.3s ease, background-color 0.3s ease;
-}
-
-/* Navbar al hacer scroll */
-nav.scrolled {
-  --nav-height: 60px; /* reduce altura */
-  --nav-bg: rgba(255,255,255,0.98);
-  background-color: var(--nav-bg);
-  justify-content: center;
-  align-items: center;
-}
-
-
-
-/* Footer */
-.footer {
-    background-color: rgba(0, 0, 0, 0.9);
-    color: #fff;
-    text-align: center;
-    padding: 30px 20px;
-    margin-top: 50px;
-    border-top: 3px solid var(--primary);
-}
-
-
-
-/* Contenedor del footer */
-.footer-container {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-
-
-/* Título footer */
-.footer h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: var(--primary);
-}
-
-
-
-/* Texto footer */
-.footer p {
-    margin: 6px 0;
-    font-size: 14px;
-}
-
-
-
-/* Hover texto footer */
-.footer p:hover {
-    color: var(--primary);
-    transition: 0.3s;
-}
-
-
-
-/* ==========================
-
-   CONTENEDOR GENERAL
-
-========================== */
+/* ==========================================================================
+   OTROS FORMULARIOS (LOGIN, REGISTRO, MODALES) - TEXTO BLANCO
+   ========================================================================== */
 .formularios-flex {
     display: flex;
     gap: 30px;
@@ -513,14 +397,9 @@ nav.scrolled {
     justify-content: center;
 }
 
-
-
-/* ==========================
-
-   FORMULARIOS
-
-========================== */
-form {
+/* Estilos para formularios generales oscuros (excluyendo el bloque #contacto solicitado) */
+.formularios-flex form,
+.modal-contenido form {
     background: #0d0d0d;
     padding: 20px;
     border-radius: 10px;
@@ -529,72 +408,33 @@ form {
     width: 100%;
 }
 
+.formularios-flex form label,
+.formularios-flex form h4,
+.modal-contenido h4 {
+    color: #ffffff !important;
+}
 
-
-/* ==========================
-
-   INPUTS
-
-========================== */
-form input,
-form textarea {
+.formularios-flex form input,
+.formularios-flex form textarea,
+.modal-contenido form input,
+.modal-contenido form textarea {
     width: 100%;
     padding: 10px;
     margin: 8px 0;
     border: 1px solid var(--primary);
     border-radius: 5px;
     background: #000;
-    color: var(--primary);
+    color: #ffffff !important;
     transition: 0.3s;
 }
 
-
-
-/* Focus */
-form input:focus,
-form textarea:focus {
+.formularios-flex form input:focus,
+.formularios-flex form textarea:focus {
     outline: none;
     box-shadow: 0 0 8px var(--primary);
 }
 
-
-
-/* ==========================
-   ESTADOS DE VALIDACIÓN
-
-========================== */
-
-/* Error */
-.input-error {
-    border: 2px solid red !important;
-    box-shadow: 0 0 5px red;
-}
-
-
-
-/* Correcto */
-.input-ok {
-    border: 2px solid var(--primary) !important;
-    box-shadow: 0 0 5px var(--primary);
-}
-
-
-
-/* Mensajes de error debajo */
-.error-text {
-    color: red;
-    font-size: 12px;
-    margin: -5px 0 5px 0;
-}
-
-
-
-/* ==========================
-
-   BOTÓN
-
-========================== */
-form button {
+.formularios-flex form button {
     width: 100%;
     padding: 12px;
     background: black;
@@ -607,14 +447,11 @@ form button {
     box-shadow: 0 8px 18px rgba(0,0,0,0.08);
 }
 
-
-
-form button:hover {
+.formularios-flex form button:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
     box-shadow: 0 10px 22px rgba(0,0,0,0.12);
 }
-
 
 .toggle-password {
     display: inline-block;
@@ -628,61 +465,36 @@ form button:hover {
     font-size: 0.95rem;
 }
 
-
-
 .toggle-password:hover {
     background: #111;
 }
 
-
-
-/* ==========================
-   TÍTULOS
-========================== */
-
-h4 {
-    text-align: center;
-    color: var(--primary);
+/* Estados de validación e indicadores */
+.input-error {
+    border: 2px solid red !important;
+    box-shadow: 0 0 5px red;
 }
 
+.input-ok {
+    border: 2px solid var(--primary) !important;
+    box-shadow: 0 0 5px var(--primary);
+}
 
+.error-text, .error {
+    color: red;
+    font-size: 12px;
+    margin: -5px 0 5px 0;
+    display: block;
+}
 
-/* ==========================
-
-   MENSAJES GENERALES
-
-========================== */
 #mensajeLogin,
-#mensajeRegistro {
+#mensajeRegistro,
+#mensajeContacto {
     text-align: center;
     margin-top: 10px;
     font-weight: bold;
 }
 
-
-
-/* ==========================
-
-   CONTACTO MÁS PEQUEÑO
-========================== */
-#contacto {
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
-}
-
-
-
-#contacto form {
-    max-width: 300px;
-}
-
-
-
-/* ==========================
-
-   SESIÓN INICIADA (HEADER)
-========================== */
 .usuario-header {
     display: none;
     position: fixed;
@@ -697,10 +509,6 @@ h4 {
     z-index: 1000;
 }
 
-
-
-/* Botón cerrar sesión */
-
 .cerrar-sesion {
     margin-left: 10px;
     background: red;
@@ -712,19 +520,13 @@ h4 {
     font-size: 12px;
 }
 
-
-
 .cerrar-sesion:hover {
     background: darkred;
 }
 
-
-
-
-/* ===================== */
-/* MODAL OVERLAY */
-/* ===================== */
-
+/* ==========================================================================
+   VENTANAS MODALES
+   ========================================================================== */
 .modal {
     display: none;
     position: fixed;
@@ -739,12 +541,6 @@ h4 {
     align-items: center;
 }
 
-
-
-/* ===================== */
-/* CONTENIDO DEL MODAL */
-
-/* ===================== */
 .modal-contenido {
     background: rgba(13, 13, 13, 0.95);
     padding: 25px;
@@ -756,43 +552,25 @@ h4 {
     animation: modalAparecer 0.25s ease-out;
 }
 
-
-
-/* ===================== */
-/* ANIMACIÓN */
-/* ===================== */
 @keyframes modalAparecer {
     from {
         transform: scale(0.85);
         opacity: 0;
     }
-
     to {
         transform: scale(1);
         opacity: 1;
     }
-
 }
-
-
-
-/* ===================== */
-
-/* BOTÓN CERRAR */
-
-/* ===================== */
 
 .cerrar {
     position: absolute;
     top: 10px;
     right: 15px;
-
     font-size: 26px;
     cursor: pointer;
-
     color: var(--primary);
     font-weight: bold;
-
     transition: 0.2s ease;
 }
 
@@ -801,14 +579,9 @@ h4 {
     transform: scale(1.2);
 }
 
-/* ===================== */
-/* TÍTULOS DEL MODAL */
-/* ===================== */
-.modal-contenido h4 {
-    text-align: center;
-    color: var(--primary);
-    margin-bottom: 15px;
-}
+/* ==========================================================================
+   BLOQUES ENVIADOS POR EL USUARIO (MANTENIDOS 100% IGUALES)
+   ========================================================================== */
 
 #contacto {
     display: flex;
@@ -862,121 +635,14 @@ input {
     color: #fff;
 }
 
-
-
 /* FECHA */
 .fecha {
     display: flex;
     gap: 10px;
 }
 
-
-
-/* ==========================
-   MODAL: ajustes de color respetando variables globales
-   ==========================
-*/
-.modal overlay uses rgba to dim background while keeping primary intact
-.modal and .modal-contenido use theme variables from index.css
-.modal { background-color: rgba(0,0,0,0.6); }
-.modal-contenido {
-    background: var(--bg);
-    color: var(--text);
-    border: 1px solid var(--primary);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-}
-
-
-
-.modal-contenido h4 {
-    color: var(--primary);
-}
-
-
-
-.modal-contenido .cerrar {
-    color: var(--primary);
-}
-
-
-.modal-contenido form {
-    background: rgba(0,0,0,0.04);
-    padding: 0;
-    box-shadow: none;
-    width: 100%;
-}
-
-
-.modal-contenido form input,
-.modal-contenido form textarea {
-    background: rgba(0,0,0,0.04);
-    color: var(--text);
-    border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 8px;
-    padding: 10px;
-}
-
-
-
-.modal-contenido form button {
-    background: black;
-    color: white;
-    border: none;
-}
-
-
-
-.toggle-password,
-.modal-contenido .toggle-password {
-    border: 1px solid var(--primary);
-    color: var(--primary);
-    background: transparent;
-}
-
-
-
-.cerrar:hover {
-    color: var(--primary-dark);
-}
-
-
-
-/* CHECKBOX */
-.check {
-    margin-top: 15px;
-}
-
-
-
-/* BOTON */
-button {
-    margin-top: 20px;
-    padding: 12px;
-    border-radius: 25px;
-    border: 2px solid var(--primary);
-    background: black;
-    cursor: pointer;
-    color: var(--primary);
-}
-
-
-
-button:hover {
-    background: var(--primary);
-    color: black;
-}
-
-
-
-/* MENSAJE */
-#mensajeContacto {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-
 /* ===================== */
-/*  CARRUSEL DESTACADOS */
+/* CARRUSEL DESTACADOS */
 /* ===================== */
 
 /* Sección */
@@ -987,8 +653,6 @@ button:hover {
     padding: 40px;
     border-radius: 15px;
 }
-
-
 
 /* Contenedor principal */
 .carrusel-container {
@@ -1003,8 +667,6 @@ button:hover {
     align-items: center;
     justify-content: center;
 }
-
-
 
 /* Slides */
 .carrusel-slide {
@@ -1031,13 +693,10 @@ button:hover {
     transition: opacity 0.9s ease, transform 0.9s ease, background 0.3s ease;
 }
 
-
 .item.active {
     opacity: 1;
     transform: scale(1);
 }
-
-
 
 /* Imagen */
 .item img {
@@ -1050,23 +709,17 @@ button:hover {
     transition: transform 0.6s ease, filter 0.6s ease;
 }
 
-
-
 /* Hover moderno */
 .item img:hover {
     transform: scale(1.05);
     filter: brightness(1.08);
 }
 
-
-
 /* Título */
 .item h3 {
     color: var(--primary);
     margin-top: 15px;
 }
-
-
 
 /* ===================== */
 /* BOTONES */
@@ -1087,16 +740,12 @@ button:hover {
     transition: 0.3s;
 }
 
-
-
 /* Hover botones */
 .carrusel-container button:hover {
     background: var(--primary);
     color: black;
     transform: translateY(-50%) scale(1.1);
 }
-
-
 
 /* Izquierda */
 .prev {
@@ -1107,8 +756,6 @@ button:hover {
 .next {
     right: 15px;
 }
-
-
 
 /* ===================== */
 /* CARRUSEL PERSONAJES */
@@ -1127,17 +774,14 @@ button:hover {
     position: relative;
 }
 
-
-
 /* TRACK */
 .carousel-track {
     display: flex;
     transition: transform 0.5s ease;
 }
 
-
 /* CARD */
-.card {
+.carousel .card {
     min-width: 100%;
     background: #111;
     padding: 20px;
@@ -1147,7 +791,7 @@ button:hover {
     transition: 0.4s;
 }
 
-.card.active {
+.carousel .card.active {
     opacity: 1;
     transform: scale(1);
 }
@@ -1157,8 +801,6 @@ button:hover {
     width: 150px;
     margin-bottom: 10px;
 }
-
-
 
 /* BOTONES INTERNOS */
 .buttons button {
@@ -1170,7 +812,6 @@ button:hover {
     cursor: pointer;
     border-radius: 5px;
 }
-
 
 /* 🔥 BOTONES DEL CARRUSEL */
 .nav-btn {
@@ -1187,53 +828,53 @@ button:hover {
     z-index: 10;
 }
 
-
-
 .nav-btn:hover {
     background: var(--primary);
     color: black;
 }
 
-.prev {
+.carousel .prev {
     left: 10px;
 }
 
-.next {
+.carousel .next {
     right: 10px;
 }
 
-
-
-/* ===================== */
-/* VALIDACIÓN FORMULARIOS */
-/* ===================== */
-.error {
-    color: red;
-    font-size: 12px;
-    margin-bottom: 10px;
-    display: block;
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 50px;
+    border-top: 3px solid var(--primary);
 }
 
-
-
-.input-error {
-    border: 2px solid red;
+.footer-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-
-
-.input-ok {
-    border: 2px solid var(--primary);
+.footer h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: var(--primary);
 }
 
-
-
-
-/* ==========================
-   GRID (NUEVO)
-========================== */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+.footer p {
+    margin: 6px 0;
+    font-size: 14px;
 }
+
+.footer p:hover {
+    color: var(--primary);
+    transition: 0.3s;
+}
+
