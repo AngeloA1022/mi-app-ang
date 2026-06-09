@@ -416,10 +416,10 @@ input {
     padding: 12px;
     margin-top: 8px;
     margin-bottom: 8px;
-    border: 1px solid var(--primary) !important;
+    border: 1px solid var(--primary);
     border-radius: 20px;
-    background: #000 !important;
-    color: #ffffff !important;
+    background: #000;
+    color: #ffffff;
     transition: 0.3s;
 }
 
@@ -435,7 +435,7 @@ form label,
 form h4,
 .modal-contenido h4,
 .modal-contenido form label {
-    color: #ffffff !important;
+    color: #ffffff ;
 }
 
 h4 {
@@ -445,12 +445,12 @@ h4 {
 
 /* Estados de Validación */
 .input-error {
-    border: 2px solid red !important;
+    border: 2px solid red ;
     box-shadow: 0 0 5px red;
 }
 
 .input-ok {
-    border: 2px solid var(--primary) !important;
+    border: 2px solid var(--primary) ;
     box-shadow: 0 0 5px var(--primary);
 }
 
@@ -566,7 +566,7 @@ button:hover {
 }
 
 .modal-contenido {
-    background: #000000 !important; /* Blindado: Fondo completamente negro sólido */
+    background: #000000 ; /* Blindado: Fondo completamente negro sólido */
     padding: 25px;
     border-radius: 12px;
     width: 320px;
@@ -587,7 +587,7 @@ button:hover {
 
 .modal-contenido h4 {
     text-align: center;
-    color: var(--primary);
+    color: white;
     margin-bottom: 15px;
 }
 
@@ -645,7 +645,7 @@ button:hover {
 
 #contacto form {
     max-width: 300px;
-    background: transparent;
+    background: black;
     box-shadow: none;
     padding: 0;
 }
