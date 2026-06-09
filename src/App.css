@@ -1,3 +1,4 @@
+
 /* ==========================================================================
    PALETA ACCESIBLE (WCAG AA) Y VARIABLES
    ========================================================================== */
@@ -441,6 +442,15 @@ form h4,
 h4 {
     text-align: center;
     color: var(--primary);
+}
+
+/* NUEVA REGLA AGREGADA: Fuerza a que los textos descriptivos sueltos de los 
+   formularios (span, p o texto plano) pasen de negro a blanco */
+form span, 
+form p,
+.modal-contenido form,
+form div {
+    color: #ffffff;
 }
 
 /* Estados de Validación */
