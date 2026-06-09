@@ -333,7 +333,7 @@ section h2 {
 }
 
 /* ==========================================================================
-   BOTONES GENERALES
+   BOTONES GENERALES Y ESPECÍFICOS DE INTERFAZ
    ========================================================================== */
 .button { 
     background-color: black; 
@@ -388,7 +388,7 @@ section h2 {
 }
 
 /* ==========================================================================
-   OTROS FORMULARIOS (LOGIN, REGISTRO, MODALES) - TEXTO BLANCO
+   FORMULARIOS COMPLETO (INTEGRACIÓN FLUIDA DE ESTILOS)
    ========================================================================== */
 .formularios-flex {
     display: flex;
@@ -397,9 +397,9 @@ section h2 {
     justify-content: center;
 }
 
-/* Estilos para formularios generales oscuros (excluyendo el bloque #contacto solicitado) */
-.formularios-flex form,
-.modal-contenido form {
+form {
+    display: flex;
+    flex-direction: column;
     background: #0d0d0d;
     padding: 20px;
     border-radius: 10px;
@@ -408,68 +408,42 @@ section h2 {
     width: 100%;
 }
 
-.formularios-flex form label,
-.formularios-flex form h4,
-.modal-contenido h4 {
-    color: #ffffff !important;
-}
-
-.formularios-flex form input,
-.formularios-flex form textarea,
-.modal-contenido form input,
-.modal-contenido form textarea {
+/* Inputs y Textareas Normalizados */
+form input,
+form textarea,
+input {
     width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid var(--primary);
-    border-radius: 5px;
-    background: #000;
+    padding: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: 1px solid var(--primary) !important;
+    border-radius: 20px;
+    background: #000 !important;
     color: #ffffff !important;
     transition: 0.3s;
 }
 
-.formularios-flex form input:focus,
-.formularios-flex form textarea:focus {
+form input:focus,
+form textarea:focus,
+input:focus {
     outline: none;
     box-shadow: 0 0 8px var(--primary);
 }
 
-.formularios-flex form button {
-    width: 100%;
-    padding: 12px;
-    background: black;
-    border: none;
-    border-radius: 8px;
+/* Etiquetas y Textos Internos */
+form label,
+form h4,
+.modal-contenido h4,
+.modal-contenido form label {
+    color: #ffffff !important;
+}
+
+h4 {
+    text-align: center;
     color: var(--primary);
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
 }
 
-.formularios-flex form button:hover {
-    background: var(--primary-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
-}
-
-.toggle-password {
-    display: inline-block;
-    margin: 6px 0 10px 0;
-    padding: 8px 12px;
-    background: #222;
-    color: var(--primary);
-    border: 1px solid var(--primary);
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.95rem;
-}
-
-.toggle-password:hover {
-    background: #111;
-}
-
-/* Estados de validación e indicadores */
+/* Estados de Validación */
 .input-error {
     border: 2px solid red !important;
     box-shadow: 0 0 5px red;
@@ -487,14 +461,63 @@ section h2 {
     display: block;
 }
 
-#mensajeLogin,
-#mensajeRegistro,
-#mensajeContacto {
+/* Botones en Formularios */
+form button,
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: var(--primary);
+    border: 2px solid var(--primary);
+    border-radius: 25px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+form button:hover,
+button:hover {
+    background: var(--primary-dark);
+    color: var(--primary-contrast);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+}
+
+.toggle-password {
+    display: inline-block;
+    margin: 6px 0 10px 0;
+    padding: 8px 12px;
+    background: #222;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    width: auto;
+}
+
+.toggle-password:hover {
+    background: #111;
+}
+
+.check {
+    margin-top: 15px;
+}
+
+.fecha {
+    display: flex;
+    gap: 10px;
+}
+
+#mensajeLogin, #mensajeRegistro, #mensajeContacto {
     text-align: center;
     margin-top: 10px;
     font-weight: bold;
 }
 
+/* Control de usuario logueado en Header */
 .usuario-header {
     display: none;
     position: fixed;
@@ -518,6 +541,7 @@ section h2 {
     border-radius: 10px;
     cursor: pointer;
     font-size: 12px;
+    width: auto;
 }
 
 .cerrar-sesion:hover {
@@ -525,7 +549,7 @@ section h2 {
 }
 
 /* ==========================================================================
-   VENTANAS MODALES
+   VENTANAS MODALES (SÓLIDO, COMPLEMENTADO Y CON CORRECCIÓN DE FONDO)
    ========================================================================== */
 .modal {
     display: none;
@@ -542,7 +566,7 @@ section h2 {
 }
 
 .modal-contenido {
-    background: rgba(13, 13, 13, 0.95);
+    background: #000000 !important; /* Blindado: Fondo completamente negro sólido */
     padding: 25px;
     border-radius: 12px;
     width: 320px;
@@ -550,6 +574,21 @@ section h2 {
     border: 1px solid var(--primary);
     box-shadow: 0 0 20px var(--primary);
     animation: modalAparecer 0.25s ease-out;
+}
+
+.modal-contenido form {
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    width: 100%;
+}
+
+.modal-contenido h4 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 15px;
 }
 
 @keyframes modalAparecer {
@@ -579,19 +618,38 @@ section h2 {
     transform: scale(1.2);
 }
 
-/* ==========================================================================
-   BLOQUES ENVIADOS POR EL USUARIO (MANTENIDOS 100% IGUALES)
-   ========================================================================== */
+/* Integración y herencia limpia para formularios internos de modales */
+.modal-contenido .formulario {
+    max-width: 100%;
+    width: 100%;
+    color: #ffffff;
+}
 
+.modal-contenido .formulario h3 {
+    color: #ffffff !important; /* Corregido para evitar invisibilidad sobre negro */
+    text-align: center;
+    margin-top: 0;
+}
+
+/* ==========================================================================
+   SECCIÓN DE CONTACTO PROPIA
+   ========================================================================== */
 #contacto {
     display: flex;
     justify-content: space-around;
     padding: 40px;
     background-color: rgba(255, 255, 255, 0.9);
     flex-wrap: wrap;
+    margin-top: 50px;
 }
 
-/* INFO */
+#contacto form {
+    max-width: 300px;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+
 .info {
     text-align: center;
     color: black;
@@ -610,7 +668,6 @@ section h2 {
     margin: 5px 0;
 }
 
-/* FORMULARIO */
 .formulario {
     max-width: 400px;
     color: var(--primary);
@@ -620,32 +677,9 @@ section h2 {
     margin-bottom: 15px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-/* INPUTS */
-input {
-    padding: 12px;
-    margin-top: 8px;
-    border-radius: 20px;
-    border: none;
-    background: #111;
-    color: #fff;
-}
-
-/* FECHA */
-.fecha {
-    display: flex;
-    gap: 10px;
-}
-
-/* ===================== */
-/* CARRUSEL DESTACADOS */
-/* ===================== */
-
-/* Sección */
+/* ==========================================================================
+   CARRUSEL DESTACADOS    
+   ========================================================================== */
 .destacados {
     background: rgba(255, 255, 255, 0.85);
     color: #fff;
@@ -654,7 +688,6 @@ input {
     border-radius: 15px;
 }
 
-/* Contenedor principal */
 .carrusel-container {
     width: 100%;
     max-width: 620px;
@@ -668,7 +701,6 @@ input {
     justify-content: center;
 }
 
-/* Slides */
 .carrusel-slide {
     display: flex;
     transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
@@ -677,7 +709,6 @@ input {
     will-change: transform;
 }
 
-/* Item individual */
 .item {
     min-width: 100%;
     height: 100%;
@@ -698,7 +729,6 @@ input {
     transform: scale(1);
 }
 
-/* Imagen */
 .item img {
     max-width: 65%;
     max-height: 240px;
@@ -709,21 +739,15 @@ input {
     transition: transform 0.6s ease, filter 0.6s ease;
 }
 
-/* Hover moderno */
 .item img:hover {
     transform: scale(1.05);
     filter: brightness(1.08);
 }
 
-/* Título */
 .item h3 {
     color: var(--primary);
     margin-top: 15px;
 }
-
-/* ===================== */
-/* BOTONES */
-/* ===================== */
 
 .carrusel-container button {
     position: absolute;
@@ -738,34 +762,26 @@ input {
     z-index: 10;
     border-radius: 50%;
     transition: 0.3s;
+    width: auto;
 }
 
-/* Hover botones */
 .carrusel-container button:hover {
     background: var(--primary);
     color: black;
     transform: translateY(-50%) scale(1.1);
 }
 
-/* Izquierda */
-.prev {
-    left: 15px;
-}
+.prev { left: 15px; }
+.next { right: 15px; }
 
-/* Derecha */
-.next {
-    right: 15px;
-}
-
-/* ===================== */
-/* CARRUSEL PERSONAJES */
-/* ===================== */
+/* ==========================================================================
+   CARRUSEL PERSONAJES    
+   ========================================================================== */
 .personajes {
     text-align: center;
     padding: 40px;
 }
 
-/* CONTENEDOR */
 .carousel {
     width: 100%;
     max-width: 600px;
@@ -774,13 +790,11 @@ input {
     position: relative;
 }
 
-/* TRACK */
 .carousel-track {
     display: flex;
     transition: transform 0.5s ease;
 }
 
-/* CARD */
 .carousel .card {
     min-width: 100%;
     background: #111;
@@ -796,13 +810,11 @@ input {
     transform: scale(1);
 }
 
-/* IMG */
 .img {
     width: 150px;
     margin-bottom: 10px;
 }
 
-/* BOTONES INTERNOS */
 .buttons button {
     margin: 5px;
     padding: 6px 10px;
@@ -811,10 +823,11 @@ input {
     color: black;
     cursor: pointer;
     border-radius: 5px;
+    width: auto;
 }
 
-/* 🔥 BOTONES DEL CARRUSEL */
-.nav-btn {
+.carousel .prev,
+.carousel .next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -826,20 +839,17 @@ input {
     font-size: 20px;
     border-radius: 50%;
     z-index: 10;
+    width: auto;
 }
 
-.nav-btn:hover {
+.carousel .prev:hover,
+.carousel .next:hover {
     background: var(--primary);
     color: black;
 }
 
-.carousel .prev {
-    left: 10px;
-}
-
-.carousel .next {
-    right: 10px;
-}
+.carousel .prev { left: 10px; }
+.carousel .next { right: 10px; }
 
 /* ==========================================================================
    FOOTER
