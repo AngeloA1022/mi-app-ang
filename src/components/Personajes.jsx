@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // CORRECCIÓN: Faltaba importar Link
 import blastoise from '../images/blastoise.png';
 import charizard from '../images/charizard.png';
 import pikachu from '../images/pikachu.png';
@@ -148,7 +149,17 @@ export default function Personajes() {
           <Carousel data={equilibrados} index={indexEq} setIndex={setIndexEq}/>
         </section>
 
+        {/* CORRECCIÓN: Los enlaces ahora se renderizan de forma segura dentro del contenedor principal sin romper los cierres */}
+        <section>
+          {/* ENLACES */}
+          <div className="enlaces">
+            <h2>Enlaces Útiles</h2>
+            <Link to="/">Volver a Inicio</Link>
+          </div>
+        </section>
+
       </div>
     </section>
   );
 }
+

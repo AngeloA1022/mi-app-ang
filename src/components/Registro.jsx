@@ -279,8 +279,13 @@ export default function Registro() {
           </div>
         )}
 
-        <Link to="/">Volver</Link>
-
+        <section>
+          {/* ENLACES */}
+          <div className="enlaces">
+            <h2>Enlaces Útiles</h2>
+            <Link to="/">Volver a Inicio</Link>
+          </div>
+        </section>
       </div>
     </section>
   );
