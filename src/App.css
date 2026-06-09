@@ -1,4 +1,3 @@
-
 /* ==========================================================================
    PALETA ACCESIBLE (WCAG AA) Y VARIABLES
    ========================================================================== */
@@ -820,6 +819,13 @@ button:hover {
     transform: scale(1);
 }
 
+/* CAMBIO APLICADO AQUÍ: Asegura texto blanco para la descripción al activarse */
+.carousel .card p,
+.card-content p,
+.descripcion {
+    color: #ffffff !important;
+}
+
 .img {
     width: 150px;
     margin-bottom: 10px;
@@ -897,4 +903,3 @@ button:hover {
     color: var(--primary);
     transition: 0.3s;
 }
-
