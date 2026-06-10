@@ -814,6 +814,13 @@ button:hover {
     transition: 0.4s;
 }
 
+.carousel .card h3{
+    color: white;
+    margin-bottom: 10px;
+    font-size: 20px;
+} 
+
+
 .carousel .card.active {
     opacity: 1;
     transform: scale(1);
