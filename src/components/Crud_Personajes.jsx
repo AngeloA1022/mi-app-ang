@@ -76,19 +76,22 @@ export default function CrudPokemon() {
         <h1>CRUD Pokémon</h1>
 
         <div className="form">
+          <p>(Ej: Nombre_del_Pokémon)</p>
           <input
             placeholder="Nombre"
             value={pokemon.nombre}
             onChange={(e) => setPokemon({ ...pokemon, nombre: e.target.value })}
           />
 
+          <p>(Ej: Descripción del Pokémon)</p>
           <input
             placeholder="Descripción"
             value={pokemon.descripcion}
             onChange={(e) => setPokemon({ ...pokemon, descripcion: e.target.value })}
           />
 
-          <input
+          <p>(Ej: /src/images/nombre_del_pokemon.png) </p>
+          <input 
             placeholder="URL Imagen"
             value={pokemon.img}
             onChange={(e) => setPokemon({ ...pokemon, img: e.target.value })}

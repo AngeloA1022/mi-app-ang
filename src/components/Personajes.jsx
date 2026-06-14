@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-import blastoise from "../images/blastoise.png";
+/* ==========================================================================
+   Pokemon Equilibrados
+   ========================================================================== */
 import charizard from "../images/charizard.png";
+import urshifu from "../images/urshifu.png";
+import aegislash from "../images/aegislash.png";
+import zacian from "../images/zacian.png";
+/* ==========================================================================
+   Pokemon Atacantes
+   ========================================================================== */
 import pikachu from "../images/pikachu.png";
 import venusaur from "../images/venusaur.png";
+import greninja from "../images/greninja.png";
+import cinderace from "../images/cinderace.png";
+import decidueye from "../images/decidueye.png";
+/* ==========================================================================
+   Pokemon Defensivos
+   ========================================================================== */
+import blastoise from "../images/blastoise.png";
+import goodra from "../images/goodra.png";
+import mamoswine from "../images/mamoswine.png";
+import crustle from "../images/crustle.png";
 
 export default function Personajes() {
   const [open, setOpen] = useState(null);
@@ -33,13 +50,23 @@ export default function Personajes() {
           categoria: "defensivo",
         },
         {
-          id: "charizard",
-          nombre: "Charizard",
-          img: charizard,
-          descripcion: "Alto daño y movilidad.",
-          ataques1: ["Lanzallamas", "Puño Fuego"],
-          ataques2: ["Envite Ígneo", "Llamarada"],
-          set: "Ofensivo",
+          id: "goodra",
+          nombre: "Goodra",
+          img: goodra,
+          descripcion: "Defensivo de corto alcance y daño especial elevado.",
+          ataques1: ["Agua lodosa", "Pulso Dragón"],
+          ataques2: ["Latigazo", "Bomba Acida"],
+          set: "Defensivo",
+          categoria: "defensivo",
+        },
+        {
+          id: "venusaur",
+          nombre: "Venusaur",
+          img: venusaur,
+          descripcion: "Buen balance entre ataque y resistencia.",
+          ataques1: ["Bomba Lodo", "Drenadoras"],
+          ataques2: ["Rayo Solar", "Gigadrenado"],
+          set: "Especial",
           categoria: "atacante",
         },
         {
@@ -53,13 +80,23 @@ export default function Personajes() {
           categoria: "atacante",
         },
         {
-          id: "venusaur",
-          nombre: "Venusaur",
-          img: venusaur,
-          descripcion: "Buen balance entre ataque y resistencia.",
-          ataques1: ["Bomba Lodo", "Drenadoras"],
-          ataques2: ["Rayo Solar", "Gigadrenado"],
-          set: "Especial",
+          id: "charizard",
+          nombre: "Charizard",
+          img: charizard,
+          descripcion: "Alto daño y movilidad.",
+          ataques1: ["Lanzallamas", "Puño Fuego"],
+          ataques2: ["Envite Ígneo", "Llamarada"],
+          set: "Ofensivo",
+          categoria: "equilibrado",
+        },
+        {
+          id: "urshifu",
+          nombre: "Urshifu",
+          img: urshifu,
+          descripcion: "Ataque continuo, aguante y movilidad..",
+          ataques1: ["Golpe Oscuro", "Azote Torrencial"],
+          ataques2: ["Golpe Mordaza", "Hidroariete"],
+          set: "Ofensivo",
           categoria: "equilibrado",
         },
       ];
