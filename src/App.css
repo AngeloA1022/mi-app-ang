@@ -52,6 +52,11 @@ header {
     margin: 0 auto;
 }
 
+header h1 {
+    margin: 0;
+    color:White;
+}
+
 .logo {
     position: relative;
     display: block;
@@ -789,6 +794,11 @@ button:hover {
 .personajes {
     text-align: center;
     padding: 40px;
+}
+
+.personajes h2 {
+    color: #2874a6;
+    margin-bottom: 30px;
 }
 
 .carousel {

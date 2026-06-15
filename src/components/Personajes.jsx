@@ -184,17 +184,17 @@ export default function Personajes() {
         <h1>Personajes</h1>
 
         <section>
-          <h2>🛡️ Defensivos</h2>
+          <h2> Defensivos</h2>
           <Carousel data={defensivos} index={indexDef} setIndex={setIndexDef} />
         </section>
 
         <section>
-          <h2>⚔️ Atacantes</h2>
+          <h2> Atacantes</h2>
           <Carousel data={atacantes} index={indexAtk} setIndex={setIndexAtk} />
         </section>
 
         <section>
-          <h2>⚖️ Equilibrados</h2>
+          <h2> Equilibrados</h2>
           <Carousel data={equilibrados} index={indexEq} setIndex={setIndexEq} />
         </section>
 
