@@ -67,10 +67,10 @@ export default function Inicio() {
           </div>
         </section>
 
+        {/* ENLACE */}
         <section>
-          {/* ENLACES */}
           <div className="enlaces">
-            <h2>Enlaces Útiles</h2>
+            <h2>Navegación</h2>
             <Link to="/">Volver a Inicio</Link>
           </div>
         </section>

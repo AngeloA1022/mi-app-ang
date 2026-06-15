@@ -127,15 +127,14 @@ export default function Contacto() {
 
       </section> {/* Cierre de la sección "contacto" */}
 
-      {/* =================================================== */}
-      {/* SECCIÓN ENLACES ÚTILES (COMPLETAMENTE ABAJO Y FUERA) */}
-      {/* =================================================== */}
-      <section>
-        <div className="enlaces">
-          <h2>Enlaces Útiles</h2>
-          <Link to="/">Volver a Inicio</Link>
-        </div>
-      </section>
+
+        {/* ENLACE */}
+        <section>
+          <div className="enlaces">
+            <h2>Navegación</h2>
+            <Link to="/">Volver a Inicio</Link>
+          </div>
+        </section>
     </>
   );
 }

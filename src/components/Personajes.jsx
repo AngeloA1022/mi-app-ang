@@ -200,7 +200,7 @@ export default function Personajes() {
 
         <section>
           <div className="enlaces">
-            <h2>Enlaces</h2>
+            <h2>Navegación</h2>
             <Link to="/">Inicio</Link>
             <br />
             <Link to="/crud">Ir al CRUD</Link>

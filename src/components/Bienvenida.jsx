@@ -131,6 +131,27 @@ export default function Bienvenida() {
       </section>
 
 
+
+<section>
+  <div className="enlaces">
+    <h2>Navegación</h2>
+    
+    <Link to="/inicio">Inicio</Link>
+    <br />
+
+    <Link to="/contacto">Contacto</Link>
+    <br />
+
+    <Link to="/personajes">Personajes</Link>
+    <br />
+
+    <Link to="/mapas">Mapas</Link>
+    <br />
+
+    <Link to="/objetos">Objetos</Link>
+  </div>
+</section>
+
     </div>
   );
 }

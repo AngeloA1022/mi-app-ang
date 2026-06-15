@@ -952,7 +952,68 @@ button {
   color: black;
 }
 
+/* ==========================
+   SECCIÓN NAVEGACIÓN
+   ========================== */
+.enlaces {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #000000, #0f3d0f);
+  border-radius: 12px;
+  margin: 40px auto;
+  max-width: 800px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
 
+/* TÍTULO */
+.enlaces h2 {
+  color: #22c55e;
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+/* 🔥 CONTENEDOR HORIZONTAL */
+.enlaces ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ITEMS */
+.enlaces li {
+  margin: 0;
+}
+
+/* LINKS */
+.enlaces a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+
+  background: #064e3b;
+  color: #d1fae5;
+  font-weight: bold;
+
+  transition: all 0.3s ease;
+}
+
+/* HOVER */
+.enlaces a:hover {
+  background: #22c55e;
+  color: #000;
+  transform: scale(1.08);
+}
+
+/* CLICK */
+.enlaces a:active {
+  transform: scale(0.95);
+}
 
 /* ==========================================================================
    FOOTER
