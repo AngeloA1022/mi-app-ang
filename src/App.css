@@ -874,6 +874,9 @@ button:hover {
 .carousel .prev { left: 10px; }
 .carousel .next { right: 10px; }
 
+/* ==========================================================================
+   Crud Personajes (Integración Completa con Estilos Generales y Corrección de Contraste)
+   ========================================================================== */
 .crud-section {
   width: 100%;
   min-height: 100vh;
@@ -883,6 +886,11 @@ button:hover {
   padding: 40px;
   background: rgba(0,0,0,0.7);
 }
+.crud-section h1 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+}   
 
 .crud-container {
   width: 90%;

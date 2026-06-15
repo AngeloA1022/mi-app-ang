@@ -15,6 +15,7 @@ export default function CrudPokemon() {
   });
 
   const [editando, setEditando] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     localStorage.setItem("pokemones", JSON.stringify(pokemones));
@@ -28,15 +29,23 @@ export default function CrudPokemon() {
       img: ""
     });
     setEditando(null);
+    setError("");
   };
 
+  const validar = () => {
+    if (!pokemon.nombre.trim()) return "El nombre es obligatorio";
+    if (!pokemon.descripcion.trim()) return "La descripción es obligatoria";
+    return "";
+  };
+
+  // CREATE
   const agregar = () => {
-    if (!pokemon.nombre.trim()) return;
+    const err = validar();
+    if (err) return setError(err);
 
     const nuevo = {
       id: Date.now(),
       ...pokemon,
-      // Propiedades por defecto para que la vista de personajes no falle
       ataques1: ["Ataque Básico"],
       ataques2: ["Movimiento Unite"],
       set: "Estándar"
@@ -46,10 +55,13 @@ export default function CrudPokemon() {
     limpiar();
   };
 
+  // DELETE
   const eliminar = (id) => {
+    if (!window.confirm("¿Eliminar este Pokémon?")) return;
     setPokemones(pokemones.filter(p => p.id !== id));
   };
 
+  // EDIT
   const editar = (p) => {
     setPokemon({
       nombre: p.nombre,
@@ -60,13 +72,17 @@ export default function CrudPokemon() {
     setEditando(p.id);
   };
 
+  // UPDATE
   const actualizar = () => {
+    const err = validar();
+    if (err) return setError(err);
+
     setPokemones(
       pokemones.map(p =>
-        // Conservamos los datos antiguos de 'p' (como ataques) y sobreescribimos con 'pokemon'
-        p.id === editando ? { ...p, ...pokemon, id: editando } : p
+        p.id === editando ? { ...p, ...pokemon } : p
       )
     );
+
     limpiar();
   };
 
@@ -76,23 +92,24 @@ export default function CrudPokemon() {
         <h1>CRUD Pokémon</h1>
 
         <div className="form">
-          <p>(Ej: Nombre_del_Pokémon)</p>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <p>(Ej: Nombre_del_pokemon) </p>
           <input
             placeholder="Nombre"
             value={pokemon.nombre}
             onChange={(e) => setPokemon({ ...pokemon, nombre: e.target.value })}
           />
 
-          <p>(Ej: Descripción del Pokémon)</p>
+          <p>(Ej: Gran poder y gran velocidad) </p>
           <input
             placeholder="Descripción"
             value={pokemon.descripcion}
             onChange={(e) => setPokemon({ ...pokemon, descripcion: e.target.value })}
           />
-
           <p>(Ej: /src/images/nombre_del_pokemon.png) </p>
-          <input 
-            placeholder="URL Imagen"
+          <input
+            placeholder="Imagen (Ej: /src/images/nombre_del_pokemon.png)"
             value={pokemon.img}
             onChange={(e) => setPokemon({ ...pokemon, img: e.target.value })}
           />
@@ -107,7 +124,10 @@ export default function CrudPokemon() {
           </select>
 
           {editando ? (
-            <button onClick={actualizar}>Actualizar</button>
+            <>
+              <button onClick={actualizar}>Actualizar</button>
+              <button onClick={limpiar}>Cancelar</button>
+            </>
           ) : (
             <button onClick={agregar}>Agregar</button>
           )}
@@ -115,48 +135,49 @@ export default function CrudPokemon() {
 
         <hr />
 
-        <div className="table-container">
-          <table>
-            <thead>
+        <table>
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Categoría</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {pokemones.length === 0 ? (
               <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Categoría</th>
-                <th>Acciones</th>
+                <td colSpan="5">No hay datos</td>
               </tr>
-            </thead>
-            <tbody>
-              {pokemones.length === 0 ? (
-                <tr>
-                  <td colSpan="5">No hay Pokémon registrados</td>
+            ) : (
+              pokemones.map((p) => (
+                <tr key={p.id}>
+                  <td>
+                    <img
+                      src={p.img || "https://via.placeholder.com/50"}
+                      width="50"
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/50";
+                      }}
+                      alt={p.nombre}
+                    />
+                  </td>
+
+                  <td>{p.nombre}</td>
+                  <td>{p.descripcion}</td>
+                  <td>{p.categoria}</td>
+
+                  <td>
+                    <button onClick={() => editar(p)}>Editar</button>
+                    <button onClick={() => eliminar(p.id)}>Eliminar</button>
+                  </td>
                 </tr>
-              ) : (
-                pokemones.map((p) => (
-                  <tr key={p.id}>
-                    <td>
-                      {p.img && (
-                        <img
-                          src={p.img}
-                          alt={p.nombre}
-                          width="50"
-                          style={{ objectFit: "cover" }}
-                        />
-                      )}
-                    </td>
-                    <td>{p.nombre}</td>
-                    <td>{p.descripcion}</td>
-                    <td>{p.categoria}</td>
-                    <td>
-                      <button onClick={() => editar(p)}>Editar</button>
-                      <button onClick={() => eliminar(p.id)}>Eliminar</button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            )}
+          </tbody>
+        </table>
 
         <br />
         <Link to="/personajes">Ver Personajes</Link>
