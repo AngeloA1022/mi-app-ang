@@ -11,6 +11,8 @@ import Registro from "./components/Registro";
 import Login from "./components/Login";
 import Personajes from "./components/Personajes";
 import CrudPokemon from "./components/Crud_Personajes";
+import Mapas from "./components/Mapas";
+import Objetos from "./components/Objetos";
 
 function App() {
   return (
@@ -26,6 +28,10 @@ function App() {
 
         {/* 🟢 Vista de personajes (solo lectura) */}
         <Route path="/personajes" element={<Personajes />} />
+
+        <Route path="/mapas" element={<Mapas />} />
+
+          <Route path="/objetos" element={<Objetos />} />
 
         {/* 🟢 CRUD de Pokémon */}
         <Route path="/crud" element={<CrudPokemon />} />
