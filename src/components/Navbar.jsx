@@ -17,6 +17,9 @@ export default function Navbar() {
         <li>
           <Link to="/personajes">Personajes</Link>
         </li>
+        <li>
+          <Link to="/mapas">Mapas</Link>
+        </li>
         
         <li><Link to="/registro">Registro</Link></li>
         <li><Link to="/login">Login</Link></li>
