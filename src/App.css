@@ -1,19 +1,81 @@
 /* ==========================================================================
-   PALETA ACCESIBLE (WCAG AA) Y VARIABLES
+   PALETA ACCESIBLE (WCAG AA) Y VARIABLES DEFINIDAS
    ========================================================================== */
-/* Contraste esperado (aprox.):
-     - --bg vs --text: 15.9:1  (cumple AA y AAA para texto normal)
-     - --primary vs --primary-contrast: 5.3:1  (cumple AA para texto normal)
-     - --primary sobre --bg: 5.3:1  (cumple AA)
+:root {
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --primary: #2874a6;
+    --primary-contrast: #ffffff;
+    --accent: #e8f4f8;
+    --nav-bg: rgba(255, 255, 255, 0.95);
+    --nav-text: #000000;
+    --nav-height: 70px;
+}
 
-   Variables:
-     - --bg: fondo principal
-     - --text: color de texto principal sobre el fondo
-     - --primary: color principal de botones/elementos
-     - --primary-contrast: color del texto sobre el botón primario
-*/
+/* ==========================================================================
+    MODIFICACIONES DE CONTRASTE Y MODO OSCURO (Variables dinámicas)
+   ========================================================================== */
 
-/* Activa desplazamiento suave en toda la página */
+/* 🌙 MODO OSCURO: Invierte colores clave manteniendo un tono cómodo para la noche */
+body.dark-mode {
+    --bg: #121212;
+    --text: #f5f5f5;
+    --primary: #4dabf7;
+    --accent: #1e293b;
+    --nav-bg: rgba(30, 30, 30, 0.95);
+    --nav-text: #ffffff;
+}
+
+/* ♿ ALTO CONTRASTE: Maximiza la legibilidad con negro absolut y colores llamativos */
+body.high-contrast {
+    --bg: #000000;
+    --text: #ffffff;
+    --primary: #00ffff; /* Cian brillante */
+    --accent: #333333;
+    --nav-bg: rgba(0, 0, 0, 0.98);
+    --nav-text: #ffff00; /* Texto amarillo */
+}
+
+/* Aplicaciones específicas para los cambios globales de Alto Contraste */
+body.high-contrast header {
+    background-color: #000000 !important;
+    border: 2px solid #ffffff;
+}
+
+body.high-contrast header h1 {
+    color: var(--primary) !important;
+}
+
+body.high-contrast img {
+    filter: contrast(120%); /* Resalta bordes de imágenes */
+}
+
+/* Oculta la imagen de fondo si el usuario requiere legibilidad extrema */
+body.high-contrast {
+    background-image: none !important;
+}
+
+/* 🌟 CORRECCIÓN DE TEXTO PARA ALTO CONTRASTE: Fuerza a todos los contenedores y textos a acoplarse */
+body.high-contrast div,
+body.high-contrast main,
+body.high-contrast p,
+body.high-contrast span,
+body.high-contrast h2,
+body.high-contrast h3,
+body.high-contrast li:not(.navbar-accessibility-item li) {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* Enlaces normales dentro del contenido en alto contraste */
+body.high-contrast a:not(.accessibility-btn):not(nav a) {
+    color: #00ffff !important;
+    text-decoration: underline !important;
+}
+
+/* ==========================================================================
+   ESTILOS GENERALES
+   ========================================================================== */
 html {
     scroll-behavior: smooth;
 }
@@ -22,7 +84,6 @@ html {
     box-sizing: border-box;
 }
 
-/* Estilos generales del body */
 body {
     font-family: Arial, Helvetica, sans-serif;
     min-height: 100vh;
@@ -36,6 +97,7 @@ body {
     color: var(--text);
     line-height: 1.55;
     text-rendering: optimizeLegibility;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ==========================================================================
@@ -50,11 +112,13 @@ header {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
+    transition: background-color 0.3s ease;
 }
 
 header h1 {
     margin: 0;
-    color: #2874a6;
+    color: var(--primary); /* Cambiado a variable para que cambie dinámicamente */
+    transition: color 0.3s ease;
 }
 
 .logo {
@@ -85,7 +149,7 @@ nav {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: var(--nav-bg);
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
     display: flex;
@@ -97,7 +161,6 @@ nav {
 
 nav.scrolled {
     --nav-height: 60px;
-    --nav-bg: rgba(255, 255, 255, 0.98);
     background-color: var(--nav-bg);
 }
 
@@ -116,7 +179,7 @@ nav ul {
 }
 
 nav ul li a {
-    color: black;
+    color: var(--nav-text);
     text-decoration: none;
     font-size: 1.2rem;
     font-weight: bold;
@@ -130,6 +193,11 @@ nav ul li a:focus {
     background-color: var(--accent);
     color: var(--primary);
     transform: translateY(-1px);
+}
+
+/* Forzar bordes visibles al navegar con teclado en alto contraste */
+body.high-contrast nav ul li a:focus-visible {
+    outline: 3px solid #ffff00 !important;
 }
 
 .nav-btn {
@@ -149,8 +217,10 @@ nav ul li a:focus {
     transform: translateY(-1px);
 }
 
+/* ==========================================================================
+   COMPONENTE BOTÓN DE ACCESIBILIDAD (INTEGRADO EN NAVBAR)
+   ========================================================================== */
 .accessibility-wrapper {
-  /* CAMBIADO: De 'fixed' a 'relative' para que se posicione respecto al <li> de la navbar y no a toda la pantalla */
   position: relative;
   z-index: 9999;
   font-family: sans-serif;
@@ -159,16 +229,16 @@ nav ul li a:focus {
 .accessibility-btn {
   background-color: #0056b3;
   color: #ffffff;
-  padding: 12px 20px; /* MANTIENE: Tu tamaño original */
+  padding: 12px 20px; /* Mantiene tu tamaño original */
   border: none;
-  border-radius: 50px; /* MANTIENE: Tu estilo flotante redondeado original */
-  font-size: 16px;     /* MANTIENE: Tu tamaño original */
+  border-radius: 50px; /* Mantiene tu estilo flotante redondeado original */
+  font-size: 16px;     /* Mantiene tu tamaño original */
   font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* MANTIENE: Tu sombra original */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Mantiene tu sombra original */
   transition: background-color 0.2s ease;
 }
 
@@ -176,16 +246,14 @@ nav ul li a:focus {
   background-color: #004085;
 }
 
-/* CRÍTICO PARA ACCESIBILIDAD POR TECLADO */
 .accessibility-btn:focus-visible {
   outline: 3px solid #ffc107;
   outline-offset: 3px;
 }
 
-/* Menú de opciones */
+/* Menú de opciones desplegable */
 .accessibility-menu {
   position: absolute;
-  /* CAMBIADO: De 'bottom: 60px' a 'top: 50px' para que el menú caiga hacia abajo en lugar de subir */
   top: 55px;
   right: 0;
   background: white;
@@ -197,6 +265,13 @@ nav ul li a:focus {
   color: #333;
 }
 
+/* Bloqueo preventivo: Mantiene legible el panel de accesibilidad pase lo que pase */
+body.dark-mode .accessibility-menu,
+body.high-contrast .accessibility-menu {
+    background: #ffffff !important;
+    color: #333333 !important;
+}
+
 .accessibility-menu h3 {
   margin-top: 0;
   font-size: 16px;
@@ -204,9 +279,13 @@ nav ul li a:focus {
   padding-bottom: 8px;
 }
 
+body.dark-mode .accessibility-menu h3,
+body.high-contrast .accessibility-menu h3 {
+    color: #333333 !important;
+    border-bottom: 1px solid #eee !important;
+}
+
 .accessibility-menu ul {
-  /* CAMBIADO: Fuerza a que la lista del menú vaya hacia abajo. 
-     Esto evita que herede el comportamiento horizontal de la navbar */
   display: flex !important;
   flex-direction: column !important;
   gap: 8px !important;
@@ -216,7 +295,6 @@ nav ul li a:focus {
 }
 
 .accessibility-menu ul li {
-  /* CAMBIADO: Se elimina el margen inferior para controlarlo de forma limpia con el gap del contenedor */
   margin-bottom: 0;
   width: 100%;
 }
@@ -229,6 +307,15 @@ nav ul li a:focus {
   border-radius: 4px;
   cursor: pointer;
   text-align: left;
+  font-weight: normal;
+  color: #333333;
+}
+
+body.dark-mode .accessibility-menu ul li button,
+body.high-contrast .accessibility-menu ul li button {
+    background: #f8f9fa !important;
+    color: #333333 !important;
+    border: 1px solid #ddd !important;
 }
 
 .accessibility-menu ul li button:hover,
@@ -237,6 +324,13 @@ nav ul li a:focus {
   outline: 2px solid #0056b3;
 }
 
+/* Resalta los botones que están encendidos en el panel */
+.accessibility-menu ul li button.active-opt {
+  background-color: #e7f1ff !important;
+  border-color: #0056b3 !important;
+  color: #0056b3 !important;
+  font-weight: bold;
+}
 
 /* ==========================================================================
    ESTRUCTURA GENERAL Y SECCIONES

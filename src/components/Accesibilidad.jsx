@@ -2,20 +2,22 @@ import React, { useState, useEffect } from "react";
 
 export default function AccessibilityButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const [textSize, setTextSize] = useState(1); // 1: Normal, 2: Grande, 3: Extra
-  const [highContrast, setHighContrast] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
 
-  useEffect(() => {
-    const savedTextSize = localStorage.getItem("acc-text-size");
-    const savedContrast = localStorage.getItem("acc-contrast") === "true";
-    const savedDarkMode = localStorage.getItem("acc-dark-mode") === "true";
+  // Inicializamos el estado directamente desde localStorage para evitar bucles o sobreescrituras
+  const [textSize, setTextSize] = useState(() => {
+    const saved = localStorage.getItem("acc-text-size");
+    return saved ? parseInt(saved, 10) : 1;
+  });
 
-    if (savedTextSize) setTextSize(parseInt(savedTextSize, 10));
-    if (savedContrast) setHighContrast(savedContrast);
-    if (savedDarkMode) setDarkMode(savedDarkMode);
-  }, []);
+  const [highContrast, setHighContrast] = useState(() => {
+    return localStorage.getItem("acc-contrast") === "true";
+  });
 
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("acc-dark-mode") === "true";
+  });
+
+  // Este efecto se encarga ÚNICAMENTE de aplicar los cambios visuales y guardar en localStorage
   useEffect(() => {
     // 1. Tamaño del texto
     if (textSize === 2) document.body.style.fontSize = "120%";
@@ -55,7 +57,7 @@ export default function AccessibilityButton() {
         role="region"
         aria-labelledby="btn-accesibilidad"
       >
-        <h4>Accesibilidad</h4>
+        <h3>Accesibilidad</h3>
         <ul>
           <li>
             <button onClick={() => setTextSize(prev => prev >= 3 ? 1 : prev + 1)}>
@@ -63,12 +65,18 @@ export default function AccessibilityButton() {
             </button>
           </li>
           <li>
-            <button onClick={() => setHighContrast(!highContrast)} className={highContrast ? "active-opt" : ""}>
+            <button 
+              onClick={() => setHighContrast(!highContrast)} 
+              className={highContrast ? "active-opt" : ""}
+            >
               Contraste: {highContrast ? "SÍ" : "NO"}
             </button>
           </li>
           <li>
-            <button onClick={() => setDarkMode(!darkMode)} className={darkMode ? "active-opt" : ""}>
+            <button 
+              onClick={() => setDarkMode(!darkMode)} 
+              className={darkMode ? "active-opt" : ""}
+            >
               Modo Oscuro: {darkMode ? "ON" : "OFF"}
             </button>
           </li>
