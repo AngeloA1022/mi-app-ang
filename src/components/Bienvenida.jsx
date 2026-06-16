@@ -132,20 +132,15 @@ export default function Bienvenida() {
 <section>
   <div className="enlaces">
     <h2>Navegación</h2>
-    
-    <Link to="/inicio">Inicio</Link>
-    <br />
 
-    <Link to="/contacto">Contacto</Link>
-    <br />
+    <ul>
+      <li><Link to="/inicio">Inicio</Link></li>
+      <li><Link to="/contacto">Contacto</Link></li>
+      <li><Link to="/personajes">Personajes</Link></li>
+      <li><Link to="/mapas">Mapas</Link></li>
+      <li><Link to="/objetos">Objetos</Link></li>
+    </ul>
 
-    <Link to="/personajes">Personajes</Link>
-    <br />
-
-    <Link to="/mapas">Mapas</Link>
-    <br />
-
-    <Link to="/objetos">Objetos</Link>
   </div>
 </section>
 

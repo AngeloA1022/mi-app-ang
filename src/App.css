@@ -294,7 +294,7 @@ section h2 {
 }
 
 .consejo-img {
-    width: 35%;
+    width: 60%;
     height: auto;
     border-radius: 10px;
     display: block;
@@ -310,7 +310,7 @@ section h2 {
 }
 
 .mapa-img {
-    width: 50%;
+    width: 60%;
     height: auto;
     border-radius: 10px;
     display: block;
@@ -319,7 +319,7 @@ section h2 {
 
 /* Imagen dentro de tarjeta independiente */
 .card-content img {
-    width: 30%; 
+    width: 40%; 
     height: auto; 
     border-radius: 10px; 
 } 
@@ -1015,18 +1015,18 @@ button {
   background: linear-gradient(135deg, #000000, #0f3d0f);
   border-radius: 12px;
   margin: 40px auto;
-  max-width: 800px;
+  max-width: 900px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
 /* TÍTULO */
 .enlaces h2 {
   color: #22c55e;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   font-size: 26px;
 }
 
-/* 🔥 CONTENEDOR HORIZONTAL */
+/* 🔥 CONTENEDOR HORIZONTAL PERFECTO */
 .enlaces ul {
   list-style: none;
   padding: 0;
@@ -1034,8 +1034,10 @@ button {
 
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+
+  gap: 15px;
+  flex-wrap: nowrap; /* 🔥 CLAVE: nunca se bajan */
 }
 
 /* ITEMS */
@@ -1047,7 +1049,8 @@ button {
 .enlaces a {
   display: inline-block;
   text-decoration: none;
-  padding: 12px 18px;
+
+  padding: 12px 20px;
   border-radius: 8px;
 
   background: #064e3b;
@@ -1055,6 +1058,7 @@ button {
   font-weight: bold;
 
   transition: all 0.3s ease;
+  white-space: nowrap; /* 🔥 evita saltos de texto */
 }
 
 /* HOVER */

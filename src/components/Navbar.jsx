@@ -49,6 +49,7 @@ export default function Navbar() {
         <ul>
           <li><Link to="/">Bienvenido</Link></li>
           <li><Link to="/inicio">Inicio</Link></li>
+          <li><Link to="/consejos">Consejos</Link></li>
           <li><Link to="/contacto">Contacto</Link></li>
           <li><Link to="/personajes">Personajes</Link></li>
           <li><Link to="/mapas">Mapas</Link></li>

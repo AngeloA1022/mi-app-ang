@@ -13,6 +13,7 @@ import Personajes from "./components/Personajes";
 import CrudPokemon from "./components/Crud_Personajes";
 import Mapas from "./components/Mapas";
 import Objetos from "./components/Objetos";
+import Consejos from "./components/Consejos";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route path="/" element={<Bienvenida />} />
         <Route path="/inicio" element={<Inicio />} />
         <Route path="/contacto" element={<Contacto />} />
+
+        <Route path="/consejos" element={<Consejos />} />
 
         {/* 🟢 Vista de personajes (solo lectura) */}
         <Route path="/personajes" element={<Personajes />} />

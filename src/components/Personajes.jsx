@@ -201,7 +201,7 @@ export default function Personajes() {
         <section>
           <div className="enlaces">
             <h2>Navegación</h2>
-            <Link to="/">Inicio</Link>
+            <Link to="/">Volver al Inicio</Link>
             <br />
       {/* =====================================
           <Link to="/crud">Ir al CRUD</Link>
