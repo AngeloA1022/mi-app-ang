@@ -12,39 +12,72 @@ PALETA ACCESIBLE (WCAG AA)
 }
 
 /* ==========================================================================
-ALTO CONTRASTE
+ALTO CONTRASTE (CORREGIDO)
 ========================================================================== */
 body.high-contrast {
 --bg: #000000;
 --text: #ffffff;
 --primary: #00ffff;
---accent: #333333;
---nav-bg: rgba(0, 0, 0, 0.98);
+--accent: #222222;
+--nav-bg: #000000;
 --nav-text: #ffff00;
 
 background-image: none !important;
 }
 
-/* Fuerza fondo y texto (evita espacios blancos) */
+/* ⚠️ SOLO TEXTO Y BORDES (NO ROMPE MENÚ) */
 body.high-contrast * {
+color: #ffff00;
+border-color: #ffffff !important;
+}
+
+/* Fondos controlados (NO todo negro para no romper UI) */
+body.high-contrast,
+body.high-contrast header,
+body.high-contrast nav,
+body.high-contrast main,
+body.high-contrast section,
+body.high-contrast footer {
 background-color: #000000 !important;
-color: #ffffff !important;
 }
 
 /* Links accesibles */
-body.high-contrast a:not(.accessibility-btn):not(nav a) {
+body.high-contrast a:not(.accessibility-btn) {
 color: #00ffff !important;
 text-decoration: underline;
 }
 
+/* Navbar visible */
+body.high-contrast nav a {
+color: #ffff00 !important;
+}
+
+/* Botones */
+body.high-contrast button {
+background-color: #000 !important;
+color: #fff !important;
+border: 2px solid #fff !important;
+}
+
 /* Focus accesible */
-body.high-contrast nav ul li a:focus-visible {
+body.high-contrast *:focus-visible {
 outline: 3px solid #ffff00 !important;
 }
 
 /* Imágenes */
 body.high-contrast img {
 filter: contrast(120%);
+}
+
+/* Menú accesibilidad SIEMPRE legible */
+body.high-contrast .accessibility-menu {
+background: #ffffff !important;
+color: #000000 !important;
+}
+
+body.high-contrast .accessibility-menu button {
+background: #eeeeee !important;
+color: #000000 !important;
 }
 
 /* ==========================================================================
@@ -56,8 +89,8 @@ overflow-x: hidden;
 }
 
 * {
-  box-sizing: border-box;
-  }
+box-sizing: border-box;
+}
 
 body {
 font-family: Arial, Helvetica, sans-serif;
@@ -71,7 +104,6 @@ background-position: center;
 background-size: cover;
 color: var(--text);
 line-height: 1.55;
-text-rendering: optimizeLegibility;
 transition: background-color 0.3s ease, color 0.3s ease;
 overflow-x: hidden;
 }
@@ -80,7 +112,6 @@ overflow-x: hidden;
 HEADER
 ========================================================================== */
 header {
-position: relative;
 background-color: rgba(0, 0, 0, 0.8);
 color: white;
 padding: 20px;
@@ -109,7 +140,7 @@ width: 120px;
 }
 
 /* ==========================================================================
-NAVBAR (ARREGLADA)
+NAVBAR (ESTABLE Y SIN BUG)
 ========================================================================== */
 nav {
 position: sticky;
@@ -123,7 +154,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 
-padding: 10px 0; /* 🔥 altura flexible */
+padding: 10px 0;
 }
 
 nav ul {
@@ -132,15 +163,13 @@ gap: 20px;
 list-style: none;
 padding: 10px 20px;
 margin: 0;
-
-flex-wrap: wrap; /* 🔥 evita que se rompa */
+flex-wrap: wrap;
 justify-content: center;
 }
 
 nav ul li a {
 display: inline-block;
 white-space: nowrap;
-
 color: var(--nav-text);
 text-decoration: none;
 font-weight: bold;
@@ -186,12 +215,6 @@ border-radius: 8px;
 padding: 15px;
 width: 250px;
 color: #333;
-}
-
-/* Siempre legible */
-body.high-contrast .accessibility-menu {
-background: #ffffff !important;
-color: #333 !important;
 }
 
 .accessibility-menu ul {

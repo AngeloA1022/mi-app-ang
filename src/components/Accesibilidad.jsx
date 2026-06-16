@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 export default function AccessibilityButton() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Inicializamos el estado directamente desde localStorage para evitar bucles o sobreescrituras
   const [textSize, setTextSize] = useState(() => {
     const saved = localStorage.getItem("acc-text-size");
     return saved ? parseInt(saved, 10) : 1;
@@ -13,67 +12,51 @@ export default function AccessibilityButton() {
     return localStorage.getItem("acc-contrast") === "true";
   });
 
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("acc-dark-mode") === "true";
-  });
-
-  // Este efecto se encarga ÚNICAMENTE de aplicar los cambios visuales y guardar en localStorage
   useEffect(() => {
-    // 1. Tamaño del texto
-    if (textSize === 2) document.body.style.fontSize = "120%";
-    else if (textSize === 3) document.body.style.fontSize = "140%";
+    // ✅ Tamaños bien definidos
+    if (textSize === 2) document.body.style.fontSize = "80%";
+    else if (textSize === 3) document.body.style.fontSize = "120%";
+    else if (textSize === 4) document.body.style.fontSize = "140%";
     else document.body.style.fontSize = "100%";
+
     localStorage.setItem("acc-text-size", textSize);
 
-    // 2. Alto contraste
-    if (highContrast) document.body.classList.add("high-contrast");
-    else document.body.classList.remove("high-contrast");
+    // ✅ Contraste
+    document.body.classList.toggle("high-contrast", highContrast);
     localStorage.setItem("acc-contrast", highContrast);
 
-    // 3. Modo Oscuro
-    //if (darkMode) document.body.classList.add("dark-mode");
-    //else document.body.classList.remove("dark-mode");
-    //localStorage.setItem("acc-dark-mode", darkMode);
-  }, [textSize, highContrast, darkMode]);
+  }, [textSize, highContrast]);
 
   return (
     <div className="accessibility-wrapper">
       <button
-        id="btn-accesibilidad"
-        className={`accessibility-btn ${isOpen ? 'active' : ''}`}
-        aria-label="Opciones de accesibilidad"
-        aria-expanded={isOpen}
-        aria-controls="menu-accesibilidad"
+        className="accessibility-btn"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span aria-hidden="true">♿</span>
-        <span className="btn-text">Accesibilidad</span>
+        ♿ Accesibilidad
       </button>
 
-      <div
-        id="menu-accesibilidad"
-        className="accessibility-menu"
-        hidden={!isOpen}
-        role="region"
-        aria-labelledby="btn-accesibilidad"
-      >
+      <div className="accessibility-menu" hidden={!isOpen}>
         <h3>Accesibilidad</h3>
         <ul>
+
           <li>
-            <button onClick={() => setTextSize(prev => prev >= 3 ? 1 : prev + 1)}>
-              Texto: {textSize === 1 ? "Normal" : textSize === 2 ? "Grande" : "Extra"}
+            <button onClick={() => setTextSize(prev => prev >= 4 ? 1 : prev + 1)}>
+              Texto: {
+                textSize === 1 ? "Normal (100%)" :
+                textSize === 2 ? "Reducido (80%)" :
+                textSize === 3 ? "Grande (120%)" :
+                "Extra grande (140%)"
+              }
             </button>
           </li>
+
           <li>
-            <button 
-              onClick={() => setHighContrast(!highContrast)} 
-              className={highContrast ? "active-opt" : ""}
-            >
+            <button onClick={() => setHighContrast(!highContrast)}>
               Contraste: {highContrast ? "SÍ" : "NO"}
             </button>
           </li>
-          
-          
+
         </ul>
       </div>
     </div>
