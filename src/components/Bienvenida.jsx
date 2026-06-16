@@ -88,12 +88,9 @@ export default function Bienvenida() {
             </div>
 
             <div className="bienvenida-box bienvenida-box-boton">
-              <button
-                className="btn-unete"
-                onClick={() => abrirModal('modalRegistro')}
-              >
+              <Link to="/registro" className="btn-unete">
                 Únete a nuestra comunidad
-              </button>
+              </Link>
             </div>
           </div>
         </div>

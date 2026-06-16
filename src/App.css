@@ -562,6 +562,11 @@ button:hover {
     background: darkred;
 }
 
+.usuario-nav {
+  color: #00ffcc;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00ffcc;
+}
 /* ==========================================================================
    VENTANAS MODALES (SÓLIDO, COMPLEMENTADO Y CON CORRECCIÓN DE FONDO)
    ========================================================================== */
