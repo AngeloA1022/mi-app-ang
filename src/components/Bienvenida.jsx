@@ -10,6 +10,7 @@ import goodra from '../images/goodra.png';
 
 /*-- ===========
 Comando para crear proyexto en React
+npm install
 cmd.exe
 npm create vite@latest mi-app --template react 
 Luego selecionar 
