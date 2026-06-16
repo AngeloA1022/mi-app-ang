@@ -31,9 +31,9 @@ export default function AccessibilityButton() {
     localStorage.setItem("acc-contrast", highContrast);
 
     // 3. Modo Oscuro
-    if (darkMode) document.body.classList.add("dark-mode");
-    else document.body.classList.remove("dark-mode");
-    localStorage.setItem("acc-dark-mode", darkMode);
+    //if (darkMode) document.body.classList.add("dark-mode");
+    //else document.body.classList.remove("dark-mode");
+    //localStorage.setItem("acc-dark-mode", darkMode);
   }, [textSize, highContrast, darkMode]);
 
   return (
@@ -72,14 +72,8 @@ export default function AccessibilityButton() {
               Contraste: {highContrast ? "SÍ" : "NO"}
             </button>
           </li>
-          <li>
-            <button 
-              onClick={() => setDarkMode(!darkMode)} 
-              className={darkMode ? "active-opt" : ""}
-            >
-              Modo Oscuro: {darkMode ? "ON" : "OFF"}
-            </button>
-          </li>
+          
+          
         </ul>
       </div>
     </div>
