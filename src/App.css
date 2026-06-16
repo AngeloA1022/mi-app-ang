@@ -149,6 +149,95 @@ nav ul li a:focus {
     transform: translateY(-1px);
 }
 
+.accessibility-wrapper {
+  /* CAMBIADO: De 'fixed' a 'relative' para que se posicione respecto al <li> de la navbar y no a toda la pantalla */
+  position: relative;
+  z-index: 9999;
+  font-family: sans-serif;
+}
+
+.accessibility-btn {
+  background-color: #0056b3;
+  color: #ffffff;
+  padding: 12px 20px; /* MANTIENE: Tu tamaño original */
+  border: none;
+  border-radius: 50px; /* MANTIENE: Tu estilo flotante redondeado original */
+  font-size: 16px;     /* MANTIENE: Tu tamaño original */
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* MANTIENE: Tu sombra original */
+  transition: background-color 0.2s ease;
+}
+
+.accessibility-btn:hover {
+  background-color: #004085;
+}
+
+/* CRÍTICO PARA ACCESIBILIDAD POR TECLADO */
+.accessibility-btn:focus-visible {
+  outline: 3px solid #ffc107;
+  outline-offset: 3px;
+}
+
+/* Menú de opciones */
+.accessibility-menu {
+  position: absolute;
+  /* CAMBIADO: De 'bottom: 60px' a 'top: 50px' para que el menú caiga hacia abajo en lugar de subir */
+  top: 55px;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  width: 250px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #333;
+}
+
+.accessibility-menu h3 {
+  margin-top: 0;
+  font-size: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.accessibility-menu ul {
+  /* CAMBIADO: Fuerza a que la lista del menú vaya hacia abajo. 
+     Esto evita que herede el comportamiento horizontal de la navbar */
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.accessibility-menu ul li {
+  /* CAMBIADO: Se elimina el margen inferior para controlarlo de forma limpia con el gap del contenedor */
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.accessibility-menu ul li button {
+  width: 100%;
+  padding: 8px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.accessibility-menu ul li button:hover,
+.accessibility-menu ul li button:focus-visible {
+  background: #e2e6ea;
+  outline: 2px solid #0056b3;
+}
+
+
 /* ==========================================================================
    ESTRUCTURA GENERAL Y SECCIONES
    ========================================================================== */

@@ -14,6 +14,7 @@ import CrudPokemon from "./components/Crud_Personajes";
 import Mapas from "./components/Mapas";
 import Objetos from "./components/Objetos";
 import Consejos from "./components/Consejos";
+import Accesibilidad from "./components/Accesibilidad";
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
         <Route path="/mapas" element={<Mapas />} />
 
           <Route path="/objetos" element={<Objetos />} />
+
+        <Route path="/accesibilidad" element={<Accesibilidad />} />
 
         {/* 🟢 CRUD de Pokémon */}
         <Route path="/crud" element={<CrudPokemon />} />

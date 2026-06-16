@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AccessibilityButton from "./Accesibilidad"; // Asegúrate de tenerlos en la misma carpeta
 
 export default function Navbar() {
   const [usuario, setUsuario] = useState(null);
@@ -33,19 +34,15 @@ export default function Navbar() {
       {/* 🔝 USUARIO + BOTÓN ARRIBA */}
       {usuario && (
         <div className="usuario-header">
-          👤 {nombreUsuario}
-
-          <button
-            className="cerrar-sesion"
-            onClick={cerrarSesion}
-          >
+          <span>👤 {nombreUsuario}</span>
+          <button className="cerrar-sesion" onClick={cerrarSesion}>
             Cerrar
           </button>
         </div>
       )}
 
       {/* 🔹 NAV */}
-      <nav>
+      <nav className="main-navbar">
         <ul>
           <li><Link to="/">Bienvenido</Link></li>
           <li><Link to="/inicio">Inicio</Link></li>
@@ -54,6 +51,11 @@ export default function Navbar() {
           <li><Link to="/personajes">Personajes</Link></li>
           <li><Link to="/mapas">Mapas</Link></li>
           <li><Link to="/objetos">Objetos</Link></li>
+          
+          {/* Componente integrado orgánicamente */}
+          <li className="navbar-accessibility-item">
+            <AccessibilityButton />
+          </li>
 
           {!usuario && (
             <>
