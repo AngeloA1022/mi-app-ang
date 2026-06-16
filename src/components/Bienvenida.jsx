@@ -8,6 +8,18 @@ import decidueye from '../images/decidueye.png';
 import blastoise from '../images/blastoise.png';
 import goodra from '../images/goodra.png';
 
+/*-- ===========
+Comando para crear proyexto en React
+cmd.exe
+npm create vite@latest mi-app --template react 
+Luego selecionar 
+JavaScript + React
+Volver a entrar a la pagina
+cd nombre-del-proyecto
+cmd.exe
+npm run dev
+========== */
+
 const slides = [
   { image: aegislash, title: 'Aegislash', description: 'Equilibrado y versátil' },
   { image: charizard, title: 'Charizard', description: 'Gran poder equilibrado' },
