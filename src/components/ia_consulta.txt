@@ -231,6 +231,9 @@ Ademas entrego un css
 Luego se pedi que me sacara el modo oscuro 
 */
 
+/* 
+Y que le realizara mejoras al codigo
+/*
 
 y quedo la version que esta ahora
 
