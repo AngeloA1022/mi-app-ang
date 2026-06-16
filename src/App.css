@@ -531,41 +531,80 @@ button:hover {
     font-weight: bold;
 }
 
-/* Control de usuario logueado en Header */
+/* =========================
+   USUARIO ARRIBA (FIJO)
+   ========================= */
 .usuario-header {
-    display: none;
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    background: black;
-    color: var(--primary);
-    padding: 8px 15px;
-    border-radius: 20px;
-    box-shadow: 0 0 10px var(--primary);
-    font-size: 14px;
-    z-index: 1000;
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  display: flex; /* 🔥 IMPORTANTE */
+  align-items: center;
+  gap: 10px;
+  background: black;
+  color: #00ffcc;
+  padding: 8px 15px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px #00ffcc;
+  font-size: 14px;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
-.cerrar-sesion {
-    margin-left: 10px;
-    background: red;
-    border: none;
-    color: black;
-    padding: 3px 8px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 12px;
-    width: auto;
-}
-
-.cerrar-sesion:hover {
-    background: darkred;
-}
-
+/* =========================
+   NOMBRE EN NAVBAR
+   ========================= */
 .usuario-nav {
   color: #00ffcc;
   font-weight: bold;
   text-shadow: 0 0 10px #00ffcc;
+}
+
+/* =========================
+   BOTÓN CERRAR SESIÓN
+   ========================= */
+.cerrar-sesion {
+  background: linear-gradient(135deg, #ff3c3c, #8b0000);
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.cerrar-sesion:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px red;
+}
+
+/* =========================
+   BOTONES LOGIN / REGISTRO
+   ========================= */
+nav a[href="/login"],
+nav a[href="/registro"] {
+  background: linear-gradient(135deg, #0066ff, #00ccff);
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+nav a[href="/registro"] {
+  background: linear-gradient(135deg, #00cc66, #00ffcc);
+}
+
+/* =========================
+   ANIMACIÓN
+   ========================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 /* ==========================================================================
    VENTANAS MODALES (SÓLIDO, COMPLEMENTADO Y CON CORRECCIÓN DE FONDO)

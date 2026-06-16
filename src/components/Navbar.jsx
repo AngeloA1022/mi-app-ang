@@ -5,7 +5,6 @@ export default function Navbar() {
   const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
 
-  // 🔐 Cargar usuario y escuchar cambios
   useEffect(() => {
     const cargarUsuario = () => {
       const user = localStorage.getItem("usuarioActivo");
@@ -13,7 +12,6 @@ export default function Navbar() {
     };
 
     cargarUsuario();
-
     window.addEventListener("loginChange", cargarUsuario);
 
     return () => {
@@ -21,45 +19,55 @@ export default function Navbar() {
     };
   }, []);
 
-  // 🚪 Cerrar sesión
   const cerrarSesion = () => {
     localStorage.removeItem("usuarioActivo");
     window.dispatchEvent(new Event("loginChange"));
     navigate("/");
   };
 
+  const nombreUsuario =
+    usuario?.nombre || usuario?.email?.split("@")[0] || "Usuario";
+
   return (
-    <nav>
-      <ul>
-        <li><Link to="/">Bienvenido</Link></li>
-        <li><Link to="/inicio">Inicio</Link></li>
-        <li><Link to="/contacto">Contacto</Link></li>
-        <li><Link to="/personajes">Personajes</Link></li>
-        <li><Link to="/mapas">Mapas</Link></li>
-        <li><Link to="/objetos">Objetos</Link></li>
+    <>
+      {/* 🔝 USUARIO + BOTÓN ARRIBA */}
+      {usuario && (
+        <div className="usuario-header">
+          👤 {nombreUsuario}
 
-        {/* 🔥 SI NO ESTÁ LOGEADO */}
-        {!usuario && (
-          <>
-            <li><Link to="/registro">Registro</Link></li>
-            <li><Link to="/login">Login</Link></li>
-          </>
-        )}
+          <button
+            className="cerrar-sesion"
+            onClick={cerrarSesion}
+          >
+            Cerrar
+          </button>
+        </div>
+      )}
 
-        {/* 🔥 SI ESTÁ LOGEADO */}
-        {usuario && (
-          <>
-            <li style={{ color: "#00ffcc", fontWeight: "bold" }}>
-              👤 {usuario.nombre}
+      {/* 🔹 NAV */}
+      <nav>
+        <ul>
+          <li><Link to="/">Bienvenido</Link></li>
+          <li><Link to="/inicio">Inicio</Link></li>
+          <li><Link to="/contacto">Contacto</Link></li>
+          <li><Link to="/personajes">Personajes</Link></li>
+          <li><Link to="/mapas">Mapas</Link></li>
+          <li><Link to="/objetos">Objetos</Link></li>
+
+          {!usuario && (
+            <>
+              <li><Link to="/registro">Registro</Link></li>
+              <li><Link to="/login">Login</Link></li>
+            </>
+          )}
+
+          {usuario && (
+            <li className="usuario-nav">
+              👤 {nombreUsuario}
             </li>
-            <li>
-              <button onClick={cerrarSesion}>
-                Cerrar sesión
-              </button>
-            </li>
-          </>
-        )}
-      </ul>
-    </nav>
+          )}
+        </ul>
+      </nav>
+    </>
   );
 }
