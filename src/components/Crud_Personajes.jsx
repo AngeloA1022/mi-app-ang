@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 export default function CrudPokemon() {
@@ -20,11 +20,15 @@ export default function CrudPokemon() {
 
   const [editando, setEditando] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // 💾 localStorage
   useEffect(() => {
     localStorage.setItem("pokemones", JSON.stringify(pokemones));
   }, [pokemones]);
+
+  // 🧠 cache para ataques (IMPORTANTE rendimiento)
+  const cacheAtaques = useRef({});
 
   // 🧹 limpiar
   const limpiar = () => {
@@ -53,23 +57,113 @@ export default function CrudPokemon() {
     nombre.toLowerCase().charAt(0).toUpperCase() +
     nombre.toLowerCase().slice(1);
 
-  // ➕ AGREGAR (100% manual)
-  const agregar = () => {
+  // 📖 descripción
+  const getDescripcion = async (nombre) => {
+    try {
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon-species/${nombre}`
+      );
+
+      if (!res.ok) return "Sin descripción disponible";
+
+      const data = await res.json();
+
+      const entry = data.flavor_text_entries.find(
+        (e) => e.language.name === "es"
+      );
+
+      return entry
+        ? entry.flavor_text.replace(/\n|\f/g, " ")
+        : "Sin descripción disponible";
+    } catch {
+      return "Sin descripción disponible";
+    }
+  };
+
+  // ⚡ ATAQUES EN ESPAÑOL REAL (POKEAPI)
+  const traducirAtaque = async (moveName) => {
+    if (cacheAtaques.current[moveName]) {
+      return cacheAtaques.current[moveName];
+    }
+
+    try {
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/move/${moveName}`
+      );
+
+      if (!res.ok) return formatearBonito(moveName);
+
+      const data = await res.json();
+
+      const traduccion = data.names.find(
+        (n) => n.language.name === "es"
+      );
+
+      const nombreFinal = traduccion
+        ? traduccion.name
+        : formatearBonito(moveName);
+
+      cacheAtaques.current[moveName] = nombreFinal;
+
+      return nombreFinal;
+    } catch {
+      return formatearBonito(moveName);
+    }
+  };
+
+  const formatearBonito = (move) =>
+    move
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (l) => l.toUpperCase());
+
+  // ➕ AGREGAR
+  const agregar = async () => {
     const err = validar();
     if (err) return setError(err);
 
-    const nuevo = {
-      id: Date.now(),
-      nombre: formatearNombre(pokemon.nombre),
-      descripcion: pokemon.descripcion,
-      categoria: pokemon.categoria,
-      img: pokemon.img || "https://via.placeholder.com/60",
-      ataques1: [pokemon.ataque1, pokemon.ataque2],
-      ataques2: [pokemon.ataque3, pokemon.ataque4]
-    };
+    setLoading(true);
+    setError("");
 
-    setPokemones([...pokemones, nuevo]);
-    limpiar();
+    try {
+      const nombre = pokemon.nombre.toLowerCase().trim();
+
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${nombre}`
+      );
+
+      if (!res.ok) throw new Error();
+
+      const data = await res.json();
+      const descripcion = await getDescripcion(data.name);
+
+      const ataquesRaw = data.moves.slice(0, 4);
+
+      const ataques = await Promise.all(
+        ataquesRaw.map((m) =>
+          traducirAtaque(m.move.name)
+        )
+      );
+
+      const nuevo = {
+        id: Date.now(),
+        apiName: data.name,
+        nombre: formatearNombre(data.name),
+        descripcion,
+        categoria: pokemon.categoria,
+        img:
+          data.sprites.other["official-artwork"].front_default ||
+          data.sprites.front_default,
+        ataques1: ataques.slice(0, 2),
+        ataques2: ataques.slice(2, 4)
+      };
+
+      setPokemones([...pokemones, nuevo]);
+      limpiar();
+    } catch {
+      setError("No se pudo encontrar el Pokémon");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ❌ eliminar
@@ -92,19 +186,21 @@ export default function CrudPokemon() {
     });
 
     setEditando(p.id);
+    setError("");
   };
 
-  // 🔄 actualizar (SIN API, 100% libre)
+  // 🔄 actualizar (editable total)
   const actualizar = () => {
     const err = validar();
     if (err) return setError(err);
 
     const actualizado = {
       id: editando,
+      apiName: pokemones.find((p) => p.id === editando)?.apiName,
       nombre: formatearNombre(pokemon.nombre),
       descripcion: pokemon.descripcion,
       categoria: pokemon.categoria,
-      img: pokemon.img || "https://via.placeholder.com/60",
+      img: pokemon.img,
       ataques1: [pokemon.ataque1, pokemon.ataque2],
       ataques2: [pokemon.ataque3, pokemon.ataque4]
     };
@@ -121,10 +217,11 @@ export default function CrudPokemon() {
   return (
     <section className="crud-section">
       <div className="crud-container">
-        <h1>CRUD Pokémon</h1>
+        <h1>CRUD Pokémon PRO (Ataques en Español Real)</h1>
 
         <div className="form">
           {error && <p style={{ color: "red" }}>{error}</p>}
+          {loading && <p>Cargando...</p>}
 
           <input
             placeholder="Nombre"
@@ -168,7 +265,6 @@ export default function CrudPokemon() {
               setPokemon({ ...pokemon, ataque1: e.target.value })
             }
           />
-
           <input
             placeholder="Ataque 2"
             value={pokemon.ataque2}
@@ -176,7 +272,6 @@ export default function CrudPokemon() {
               setPokemon({ ...pokemon, ataque2: e.target.value })
             }
           />
-
           <input
             placeholder="Ataque 3"
             value={pokemon.ataque3}
@@ -184,7 +279,6 @@ export default function CrudPokemon() {
               setPokemon({ ...pokemon, ataque3: e.target.value })
             }
           />
-
           <input
             placeholder="Ataque 4"
             value={pokemon.ataque4}
@@ -230,25 +324,16 @@ export default function CrudPokemon() {
                       src={p.img}
                       width="60"
                       alt={p.nombre}
-                      onError={(e) =>
-                        (e.target.src =
-                          "https://via.placeholder.com/60")
-                      }
                     />
                   </td>
-
                   <td>{p.nombre}</td>
                   <td>{p.descripcion}</td>
-                  <td style={{ textTransform: "capitalize" }}>
-                    {p.categoria}
-                  </td>
-
+                  <td>{p.categoria}</td>
                   <td>
                     {p.ataques1?.join(", ")}
                     <br />
                     {p.ataques2?.join(", ")}
                   </td>
-
                   <td>
                     <button onClick={() => editar(p)}>Editar</button>
                     <button onClick={() => eliminar(p.id)}>
