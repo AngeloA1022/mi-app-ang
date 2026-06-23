@@ -22,15 +22,12 @@ export default function CrudPokemon() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 💾 localStorage
   useEffect(() => {
     localStorage.setItem("pokemones", JSON.stringify(pokemones));
   }, [pokemones]);
 
-  // 🧠 cache para ataques (IMPORTANTE rendimiento)
   const cacheAtaques = useRef({});
 
-  // 🧹 limpiar
   const limpiar = () => {
     setPokemon({
       nombre: "",
@@ -46,18 +43,15 @@ export default function CrudPokemon() {
     setError("");
   };
 
-  // ⚠️ validar
   const validar = () => {
     if (!pokemon.nombre.trim()) return "El nombre es obligatorio";
     return "";
   };
 
-  // ✨ formatear nombre
   const formatearNombre = (nombre) =>
     nombre.toLowerCase().charAt(0).toUpperCase() +
     nombre.toLowerCase().slice(1);
 
-  // 📖 descripción
   const getDescripcion = async (nombre) => {
     try {
       const res = await fetch(
@@ -80,7 +74,6 @@ export default function CrudPokemon() {
     }
   };
 
-  // ⚡ ATAQUES EN ESPAÑOL REAL (POKEAPI)
   const traducirAtaque = async (moveName) => {
     if (cacheAtaques.current[moveName]) {
       return cacheAtaques.current[moveName];
@@ -112,11 +105,17 @@ export default function CrudPokemon() {
   };
 
   const formatearBonito = (move) =>
-    move
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (l) => l.toUpperCase());
+    move.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
-  // ➕ AGREGAR
+  // ⚔️ FUNCIÓN COMPETITIVA
+  const scoreMove = (move, types) => {
+    const power = move.power || 0;
+    const accuracy = move.accuracy || 80;
+    const stab = types.includes(move.type?.name) ? 1.5 : 1;
+
+    return power * stab * (accuracy / 100);
+  };
+
   const agregar = async () => {
     const err = validar();
     if (err) return setError(err);
@@ -134,13 +133,40 @@ export default function CrudPokemon() {
       if (!res.ok) throw new Error();
 
       const data = await res.json();
+
       const descripcion = await getDescripcion(data.name);
 
-      const ataquesRaw = data.moves.slice(0, 4);
+      const tiposPokemon = data.types.map(
+        (t) => t.type.name
+      );
+
+      // 🔥 MOVIMIENTOS COMPETITIVOS REALES
+      const movimientos = await Promise.all(
+        data.moves.map(async (m) => {
+          const resMove = await fetch(m.move.url);
+          const moveData = await resMove.json();
+
+          return {
+            name: m.move.name,
+            power: moveData.power,
+            accuracy: moveData.accuracy,
+            type: moveData.type
+          };
+        })
+      );
+
+      const ataquesCompetitivos = movimientos
+        .filter((m) => m.power) // elimina moves inútiles
+        .sort(
+          (a, b) =>
+            scoreMove(b, tiposPokemon) -
+            scoreMove(a, tiposPokemon)
+        )
+        .slice(0, 4);
 
       const ataques = await Promise.all(
-        ataquesRaw.map((m) =>
-          traducirAtaque(m.move.name)
+        ataquesCompetitivos.map((m) =>
+          traducirAtaque(m.name)
         )
       );
 
@@ -166,13 +192,11 @@ export default function CrudPokemon() {
     }
   };
 
-  // ❌ eliminar
   const eliminar = (id) => {
     if (!window.confirm("¿Eliminar Pokémon?")) return;
     setPokemones(pokemones.filter((p) => p.id !== id));
   };
 
-  // ✏️ editar
   const editar = (p) => {
     setPokemon({
       nombre: p.nombre,
@@ -189,7 +213,6 @@ export default function CrudPokemon() {
     setError("");
   };
 
-  // 🔄 actualizar (editable total)
   const actualizar = () => {
     const err = validar();
     if (err) return setError(err);
@@ -320,11 +343,7 @@ export default function CrudPokemon() {
               pokemones.map((p) => (
                 <tr key={p.id}>
                   <td>
-                    <img
-                      src={p.img}
-                      width="60"
-                      alt={p.nombre}
-                    />
+                    <img src={p.img} width="60" alt={p.nombre} />
                   </td>
                   <td>{p.nombre}</td>
                   <td>{p.descripcion}</td>
