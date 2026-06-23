@@ -217,7 +217,7 @@ export default function CrudPokemon() {
   return (
     <section className="crud-section">
       <div className="crud-container">
-        <h1>CRUD Pokémon PRO (Ataques en Español Real)</h1>
+        <h1>CRUD Pokémon</h1>
 
         <div className="form">
           {error && <p style={{ color: "red" }}>{error}</p>}
