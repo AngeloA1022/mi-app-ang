@@ -1,3 +1,322 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+export default function CrudPokemon() {
+  // 📦 estado seguro con validación de JSON
+  const [pokemones, setPokemones] = useState(() => {
+    try {
+      const datos = localStorage.getItem("pokemones");
+      return datos ? JSON.parse(datos) : [];
+    } catch (e) {
+      console.error("Error en localStorage:", e);
+      return [];
+    }
+  });
+
+  const [pokemon, setPokemon] = useState({
+    nombre: "",
+    descripcion: "",
+    categoria: "atacante",
+    img: ""
+  });
+
+  const [busqueda, setBusqueda] = useState("");
+  const [editando, setEditando] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // 💾 persistencia segura
+  useEffect(() => {
+    try {
+      localStorage.setItem("pokemones", JSON.stringify(pokemones));
+    } catch (e) {
+      console.error("Error guardando:", e);
+    }
+  }, [pokemones]);
+
+  // 🧹 reset
+  const limpiar = () => {
+    setPokemon({
+      nombre: "",
+      descripcion: "",
+      categoria: "atacante",
+      img: ""
+    });
+    setEditando(null);
+    setError("");
+  };
+
+  // ✅ validación mejorada
+  const validar = () => {
+    if (!pokemon.nombre.trim()) return "El nombre es obligatorio";
+    if (!pokemon.descripcion.trim()) return "La descripción es obligatoria";
+    return "";
+  };
+
+  // 🔥 CREATE MANUAL
+  const agregar = () => {
+    const err = validar();
+    if (err) return setError(err);
+
+    const nuevo = {
+      id: crypto.randomUUID(),
+      nombre: pokemon.nombre.trim(),
+      descripcion: pokemon.descripcion.trim(),
+      categoria: pokemon.categoria,
+      img: pokemon.img || "https://via.placeholder.com/100",
+      ataques1: ["Ataque Básico"],
+      ataques2: ["Movimiento Unite"],
+      set: "Manual"
+    };
+
+    setPokemones((prev) => {
+      const existe = prev.some(
+        (p) => p.nombre.toLowerCase() === nuevo.nombre.toLowerCase()
+      );
+
+      if (existe) {
+        setError("Este Pokémon ya existe");
+        return prev;
+      }
+
+      return [...prev, nuevo];
+    });
+
+    limpiar();
+  };
+
+  // 🌐 API (POKEAPI)
+  const buscarPokemon = async () => {
+    const nombre = busqueda.trim().toLowerCase();
+
+    if (!nombre) {
+      setError("Ingrese un nombre de Pokémon");
+      return;
+    }
+
+    try {
+      setError("");
+      setLoading(true);
+
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${nombre}`
+      );
+
+      if (!res.ok) throw new Error("Pokémon no encontrado");
+
+      const data = await res.json();
+
+      const nuevo = {
+        id: crypto.randomUUID(),
+        nombre: data.name ?? "desconocido",
+        descripcion: `Altura: ${data.height ?? "?"} | Peso: ${data.weight ?? "?"}`,
+        categoria:
+          (data.stats?.[1]?.base_stat ?? 0) > 80
+            ? "atacante"
+            : "defensivo",
+        img:
+          data.sprites?.other?.["official-artwork"]?.front_default ??
+          data.sprites?.front_default ??
+          "https://via.placeholder.com/100",
+        ataques1:
+          data.moves?.slice(0, 4).map((m) => m.move.name) ?? [],
+        ataques2: ["Movimiento Unite"],
+        set: "PokéAPI"
+      };
+
+      setPokemones((prev) => {
+        const existe = prev.some(
+          (p) => p.nombre === nuevo.nombre
+        );
+
+        if (existe) {
+          setError("Ya existe este Pokémon");
+          return prev;
+        }
+
+        return [...prev, nuevo];
+      });
+
+      setBusqueda("");
+    } catch (err) {
+      setError("Error al conectar con la API");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ❌ DELETE
+  const eliminar = (id) => {
+    if (!window.confirm("¿Eliminar Pokémon?")) return;
+
+    setPokemones((prev) =>
+      prev.filter((p) => p.id !== id)
+    );
+  };
+
+  // ✏️ EDIT
+  const editar = (p) => {
+    setPokemon({
+      nombre: p.nombre,
+      descripcion: p.descripcion,
+      categoria: p.categoria,
+      img: p.img
+    });
+    setEditando(p.id);
+  };
+
+  // 💾 UPDATE
+  const actualizar = () => {
+    const err = validar();
+    if (err) return setError(err);
+
+    setPokemones((prev) =>
+      prev.map((p) =>
+        p.id === editando
+          ? { ...p, ...pokemon }
+          : p
+      )
+    );
+
+    limpiar();
+  };
+
+  return (
+    <section className="crud-section">
+      <div className="crud-container">
+        <h1>CRUD Pokémon PRO</h1>
+
+        {/* ERROR */}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        {/* LOADING */}
+        {loading && <p style={{ color: "blue" }}>Cargando API...</p>}
+
+        {/* BUSCADOR API */}
+        <div style={{ marginBottom: "20px" }}>
+          <input
+            placeholder="Buscar Pokémon API"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+          <button onClick={buscarPokemon} disabled={loading}>
+            Agregar desde API
+          </button>
+        </div>
+
+        <hr />
+
+        {/* FORM */}
+        <div className="form">
+          <h3>Agregar manual</h3>
+
+          <input
+            placeholder="Nombre"
+            value={pokemon.nombre}
+            onChange={(e) =>
+              setPokemon({ ...pokemon, nombre: e.target.value })
+            }
+          />
+
+          <input
+            placeholder="Descripción"
+            value={pokemon.descripcion}
+            onChange={(e) =>
+              setPokemon({ ...pokemon, descripcion: e.target.value })
+            }
+          />
+
+          <input
+            placeholder="Imagen URL"
+            value={pokemon.img}
+            onChange={(e) =>
+              setPokemon({ ...pokemon, img: e.target.value })
+            }
+          />
+
+          <select
+            value={pokemon.categoria}
+            onChange={(e) =>
+              setPokemon({ ...pokemon, categoria: e.target.value })
+            }
+          >
+            <option value="defensivo">Defensivo</option>
+            <option value="atacante">Atacante</option>
+            <option value="equilibrado">Equilibrado</option>
+          </select>
+
+          {editando ? (
+            <>
+              <button onClick={actualizar}>Actualizar</button>
+              <button onClick={limpiar}>Cancelar</button>
+            </>
+          ) : (
+            <button onClick={agregar}>Agregar</button>
+          )}
+        </div>
+
+        <hr />
+
+        {/* TABLA */}
+        <table border="1" width="100%">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Categoría</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {pokemones.length === 0 ? (
+              <tr>
+                <td colSpan="5">Sin datos</td>
+              </tr>
+            ) : (
+              pokemones.map((p) => (
+                <tr key={p.id}>
+                  <td>
+                    <img
+                      src={p.img}
+                      width="60"
+                      alt={p.nombre}
+                      onError={(e) =>
+                        (e.target.src =
+                          "https://via.placeholder.com/60")
+                      }
+                    />
+                  </td>
+
+                  <td>{p.nombre}</td>
+                  <td>{p.descripcion}</td>
+                  <td>{p.categoria}</td>
+
+                  <td>
+                    <button onClick={() => editar(p)}>
+                      Editar
+                    </button>
+                    <button onClick={() => eliminar(p.id)}>
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+
+        <br />
+
+        <Link to="/personajes">Ver Personajes</Link>
+      </div>
+    </section>
+  );
+}
+
+
+
 /* 
 Le pedi a la IA que este codigo lo pasara a React
 /*
