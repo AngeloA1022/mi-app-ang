@@ -203,9 +203,7 @@ export default function Personajes() {
             <h2>Navegación</h2>
             <Link to="/">Volver al Inicio</Link>
             <br />
-      {/* =====================================
-          <Link to="/crud">Ir al CRUD</Link>
-          ===================================== */}
+            <Link to="/crud">Ir al CRUD</Link>
           </div>
         </section>
       </div>
