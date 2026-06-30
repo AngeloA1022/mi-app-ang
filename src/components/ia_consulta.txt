@@ -1,22 +1,16 @@
 
-#Necesito que este codigo sea funcional y que utilice una api de pokemon
-#Necesito que sea utilice esta api que tiene este link https://pokeapi.co/api/v2/pokemon/${nombre}
-#Ahora Necesito implementar esto a mi codigo de CrudPokemon
+#Necesito que este codigo sea funcional y que utilice una api de pokemon ademas necesito que sea utilice esta api que tiene este link https://pokeapi.co/api/v2/pokemon/${nombre},
+tambien necesito que seleccione 4 ataues, que esten en español y que sean ataques competitvos
 
+codigo que le entregue
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function CrudPokemon() {
-  // 📦 estado seguro con validación de JSON
   const [pokemones, setPokemones] = useState(() => {
-    try {
-      const datos = localStorage.getItem("pokemones");
-      return datos ? JSON.parse(datos) : [];
-    } catch (e) {
-      console.error("Error en localStorage:", e);
-      return [];
-    }
+    const datos = localStorage.getItem("pokemones");
+    return datos ? JSON.parse(datos) : [];
   });
 
   const [pokemon, setPokemon] = useState({
@@ -26,21 +20,13 @@ export default function CrudPokemon() {
     img: ""
   });
 
-  const [busqueda, setBusqueda] = useState("");
   const [editando, setEditando] = useState(null);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  // 💾 persistencia segura
   useEffect(() => {
-    try {
-      localStorage.setItem("pokemones", JSON.stringify(pokemones));
-    } catch (e) {
-      console.error("Error guardando:", e);
-    }
+    localStorage.setItem("pokemones", JSON.stringify(pokemones));
   }, [pokemones]);
 
-  // 🧹 reset
   const limpiar = () => {
     setPokemon({
       nombre: "",
@@ -52,135 +38,54 @@ export default function CrudPokemon() {
     setError("");
   };
 
-  // ✅ validación mejorada
   const validar = () => {
     if (!pokemon.nombre.trim()) return "El nombre es obligatorio";
     if (!pokemon.descripcion.trim()) return "La descripción es obligatoria";
     return "";
   };
 
-  // 🔥 CREATE MANUAL
+  // CREATE
   const agregar = () => {
     const err = validar();
     if (err) return setError(err);
 
     const nuevo = {
-      id: crypto.randomUUID(),
-      nombre: pokemon.nombre.trim(),
-      descripcion: pokemon.descripcion.trim(),
-      categoria: pokemon.categoria,
-      img: pokemon.img || "https://via.placeholder.com/100",
+      id: Date.now(),
+      ...pokemon,
       ataques1: ["Ataque Básico"],
       ataques2: ["Movimiento Unite"],
-      set: "Manual"
+      set: "Estándar"
     };
 
-    setPokemones((prev) => {
-      const existe = prev.some(
-        (p) => p.nombre.toLowerCase() === nuevo.nombre.toLowerCase()
-      );
-
-      if (existe) {
-        setError("Este Pokémon ya existe");
-        return prev;
-      }
-
-      return [...prev, nuevo];
-    });
-
+    setPokemones([...pokemones, nuevo]);
     limpiar();
   };
 
-  // 🌐 API (POKEAPI)
-  const buscarPokemon = async () => {
-    const nombre = busqueda.trim().toLowerCase();
-
-    if (!nombre) {
-      setError("Ingrese un nombre de Pokémon");
-      return;
-    }
-
-    try {
-      setError("");
-      setLoading(true);
-
-      const res = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${nombre}`
-      );
-
-      if (!res.ok) throw new Error("Pokémon no encontrado");
-
-      const data = await res.json();
-
-      const nuevo = {
-        id: crypto.randomUUID(),
-        nombre: data.name ?? "desconocido",
-        descripcion: `Altura: ${data.height ?? "?"} | Peso: ${data.weight ?? "?"}`,
-        categoria:
-          (data.stats?.[1]?.base_stat ?? 0) > 80
-            ? "atacante"
-            : "defensivo",
-        img:
-          data.sprites?.other?.["official-artwork"]?.front_default ??
-          data.sprites?.front_default ??
-          "https://via.placeholder.com/100",
-        ataques1:
-          data.moves?.slice(0, 4).map((m) => m.move.name) ?? [],
-        ataques2: ["Movimiento Unite"],
-        set: "PokéAPI"
-      };
-
-      setPokemones((prev) => {
-        const existe = prev.some(
-          (p) => p.nombre === nuevo.nombre
-        );
-
-        if (existe) {
-          setError("Ya existe este Pokémon");
-          return prev;
-        }
-
-        return [...prev, nuevo];
-      });
-
-      setBusqueda("");
-    } catch (err) {
-      setError("Error al conectar con la API");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ❌ DELETE
+  // DELETE
   const eliminar = (id) => {
-    if (!window.confirm("¿Eliminar Pokémon?")) return;
-
-    setPokemones((prev) =>
-      prev.filter((p) => p.id !== id)
-    );
+    if (!window.confirm("¿Eliminar este Pokémon?")) return;
+    setPokemones(pokemones.filter(p => p.id !== id));
   };
 
-  // ✏️ EDIT
+  // EDIT
   const editar = (p) => {
     setPokemon({
       nombre: p.nombre,
       descripcion: p.descripcion,
       categoria: p.categoria,
-      img: p.img
+      img: p.img || ""
     });
     setEditando(p.id);
   };
 
-  // 💾 UPDATE
+  // UPDATE
   const actualizar = () => {
     const err = validar();
     if (err) return setError(err);
 
-    setPokemones((prev) =>
-      prev.map((p) =>
-        p.id === editando
-          ? { ...p, ...pokemon }
-          : p
+    setPokemones(
+      pokemones.map(p =>
+        p.id === editando ? { ...p, ...pokemon } : p
       )
     );
 
@@ -190,31 +95,353 @@ export default function CrudPokemon() {
   return (
     <section className="crud-section">
       <div className="crud-container">
-        <h1>CRUD Pokémon PRO</h1>
+        <h1>CRUD Pokémon</h1>
 
-        {/* ERROR */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="form">
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
-        {/* LOADING */}
-        {loading && <p style={{ color: "blue" }}>Cargando API...</p>}
-
-        {/* BUSCADOR API */}
-        <div style={{ marginBottom: "20px" }}>
+          <p>(Ej: Nombre_del_pokemon) </p>
           <input
-            placeholder="Buscar Pokémon API"
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
+            placeholder="Nombre"
+            value={pokemon.nombre}
+            onChange={(e) => setPokemon({ ...pokemon, nombre: e.target.value })}
           />
-          <button onClick={buscarPokemon} disabled={loading}>
-            Agregar desde API
-          </button>
+
+          <p>(Ej: Gran poder y gran velocidad) </p>
+          <input
+            placeholder="Descripción"
+            value={pokemon.descripcion}
+            onChange={(e) => setPokemon({ ...pokemon, descripcion: e.target.value })}
+          />
+          <p>(Ej: /src/images/nombre_del_pokemon.png) </p>
+          <input
+            placeholder="Imagen (Ej: /src/images/nombre_del_pokemon.png)"
+            value={pokemon.img}
+            onChange={(e) => setPokemon({ ...pokemon, img: e.target.value })}
+          />
+
+          <select
+            value={pokemon.categoria}
+            onChange={(e) => setPokemon({ ...pokemon, categoria: e.target.value })}
+          >
+            <option value="defensivo">Defensivo</option>
+            <option value="atacante">Atacante</option>
+            <option value="equilibrado">Equilibrado</option>
+          </select>
+
+          {editando ? (
+            <>
+              <button onClick={actualizar}>Actualizar</button>
+              <button onClick={limpiar}>Cancelar</button>
+            </>
+          ) : (
+            <button onClick={agregar}>Agregar</button>
+          )}
         </div>
 
         <hr />
 
-        {/* FORM */}
+        <table>
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Categoría</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {pokemones.length === 0 ? (
+              <tr>
+                <td colSpan="5">No hay datos</td>
+              </tr>
+            ) : (
+              pokemones.map((p) => (
+                <tr key={p.id}>
+                  <td>
+                    <img
+                      src={p.img || "https://via.placeholder.com/50"}
+                      width="50"
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/50";
+                      }}
+                      alt={p.nombre}
+                    />
+                  </td>
+
+                  <td>{p.nombre}</td>
+                  <td>{p.descripcion}</td>
+                  <td>{p.categoria}</td>
+
+                  <td>
+                    <button onClick={() => editar(p)}>Editar</button>
+                    <button onClick={() => eliminar(p.id)}>Eliminar</button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+
+        <br />
+        <Link to="/personajes">Ver Personajes</Link>
+      </div>
+    </section>
+  );
+}
+
+
+codigo que me entrego
+
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+
+export default function CrudPokemon() {
+  const [pokemones, setPokemones] = useState(() => {
+    const datos = localStorage.getItem("pokemones");
+    return datos ? JSON.parse(datos) : [];
+  });
+
+  const [pokemon, setPokemon] = useState({
+    nombre: "",
+    descripcion: "",
+    categoria: "atacante",
+    img: "",
+    ataque1: "",
+    ataque2: "",
+    ataque3: "",
+    ataque4: ""
+  });
+
+  const [editando, setEditando] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("pokemones", JSON.stringify(pokemones));
+  }, [pokemones]);
+
+  const cacheAtaques = useRef({});
+
+  const limpiar = () => {
+    setPokemon({
+      nombre: "",
+      descripcion: "",
+      categoria: "atacante",
+      img: "",
+      ataque1: "",
+      ataque2: "",
+      ataque3: "",
+      ataque4: ""
+    });
+    setEditando(null);
+    setError("");
+  };
+
+  const validar = () => {
+    if (!pokemon.nombre.trim()) return "El nombre es obligatorio";
+    return "";
+  };
+
+  const formatearNombre = (nombre) =>
+    nombre.toLowerCase().charAt(0).toUpperCase() +
+    nombre.toLowerCase().slice(1);
+
+  const getDescripcion = async (nombre) => {
+    try {
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon-species/${nombre}`
+      );
+
+      if (!res.ok) return "Sin descripción disponible";
+
+      const data = await res.json();
+
+      const entry = data.flavor_text_entries.find(
+        (e) => e.language.name === "es"
+      );
+
+      return entry
+        ? entry.flavor_text.replace(/\n|\f/g, " ")
+        : "Sin descripción disponible";
+    } catch {
+      return "Sin descripción disponible";
+    }
+  };
+
+  const traducirAtaque = async (moveName) => {
+    if (cacheAtaques.current[moveName]) {
+      return cacheAtaques.current[moveName];
+    }
+
+    try {
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/move/${moveName}`
+      );
+
+      if (!res.ok) return formatearBonito(moveName);
+
+      const data = await res.json();
+
+      const traduccion = data.names.find(
+        (n) => n.language.name === "es"
+      );
+
+      const nombreFinal = traduccion
+        ? traduccion.name
+        : formatearBonito(moveName);
+
+      cacheAtaques.current[moveName] = nombreFinal;
+
+      return nombreFinal;
+    } catch {
+      return formatearBonito(moveName);
+    }
+  };
+
+  const formatearBonito = (move) =>
+    move.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+
+  // ⚔️ FUNCIÓN COMPETITIVA
+  const scoreMove = (move, types) => {
+    const power = move.power || 0;
+    const accuracy = move.accuracy || 80;
+    const stab = types.includes(move.type?.name) ? 1.5 : 1;
+
+    return power * stab * (accuracy / 100);
+  };
+
+  const agregar = async () => {
+    const err = validar();
+    if (err) return setError(err);
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const nombre = pokemon.nombre.toLowerCase().trim();
+
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${nombre}`
+      );
+
+      if (!res.ok) throw new Error();
+
+      const data = await res.json();
+
+      const descripcion = await getDescripcion(data.name);
+
+      const tiposPokemon = data.types.map(
+        (t) => t.type.name
+      );
+
+      // 🔥 MOVIMIENTOS COMPETITIVOS REALES
+      const movimientos = await Promise.all(
+        data.moves.map(async (m) => {
+          const resMove = await fetch(m.move.url);
+          const moveData = await resMove.json();
+
+          return {
+            name: m.move.name,
+            power: moveData.power,
+            accuracy: moveData.accuracy,
+            type: moveData.type
+          };
+        })
+      );
+
+      const ataquesCompetitivos = movimientos
+        .filter((m) => m.power) // elimina moves inútiles
+        .sort(
+          (a, b) =>
+            scoreMove(b, tiposPokemon) -
+            scoreMove(a, tiposPokemon)
+        )
+        .slice(0, 4);
+
+      const ataques = await Promise.all(
+        ataquesCompetitivos.map((m) =>
+          traducirAtaque(m.name)
+        )
+      );
+
+      const nuevo = {
+        id: Date.now(),
+        apiName: data.name,
+        nombre: formatearNombre(data.name),
+        descripcion,
+        categoria: pokemon.categoria,
+        img:
+          data.sprites.other["official-artwork"].front_default ||
+          data.sprites.front_default,
+        ataques1: ataques.slice(0, 2),
+        ataques2: ataques.slice(2, 4)
+      };
+
+      setPokemones([...pokemones, nuevo]);
+      limpiar();
+    } catch {
+      setError("No se pudo encontrar el Pokémon");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const eliminar = (id) => {
+    if (!window.confirm("¿Eliminar Pokémon?")) return;
+    setPokemones(pokemones.filter((p) => p.id !== id));
+  };
+
+  const editar = (p) => {
+    setPokemon({
+      nombre: p.nombre,
+      descripcion: p.descripcion,
+      categoria: p.categoria,
+      img: p.img,
+      ataque1: p.ataques1?.[0] || "",
+      ataque2: p.ataques1?.[1] || "",
+      ataque3: p.ataques2?.[0] || "",
+      ataque4: p.ataques2?.[1] || ""
+    });
+
+    setEditando(p.id);
+    setError("");
+  };
+
+  const actualizar = () => {
+    const err = validar();
+    if (err) return setError(err);
+
+    const actualizado = {
+      id: editando,
+      apiName: pokemones.find((p) => p.id === editando)?.apiName,
+      nombre: formatearNombre(pokemon.nombre),
+      descripcion: pokemon.descripcion,
+      categoria: pokemon.categoria,
+      img: pokemon.img,
+      ataques1: [pokemon.ataque1, pokemon.ataque2],
+      ataques2: [pokemon.ataque3, pokemon.ataque4]
+    };
+
+    setPokemones(
+      pokemones.map((p) =>
+        p.id === editando ? actualizado : p
+      )
+    );
+
+    limpiar();
+  };
+
+  return (
+    <section className="crud-section">
+      <div className="crud-container">
+        <h1>CRUD Pokémon</h1>
+
         <div className="form">
-          <h3>Agregar manual</h3>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          {loading && <p>Cargando...</p>}
 
           <input
             placeholder="Nombre"
@@ -251,26 +478,55 @@ export default function CrudPokemon() {
             <option value="equilibrado">Equilibrado</option>
           </select>
 
+          <input
+            placeholder="Ataque 1"
+            value={pokemon.ataque1}
+            onChange={(e) =>
+              setPokemon({ ...pokemon, ataque1: e.target.value })
+            }
+          />
+          <input
+            placeholder="Ataque 2"
+            value={pokemon.ataque2}
+            onChange={(e) =>
+              setPokemon({ ...pokemon, ataque2: e.target.value })
+            }
+          />
+          <input
+            placeholder="Ataque 3"
+            value={pokemon.ataque3}
+            onChange={(e) =>
+              setPokemon({ ...pokemon, ataque3: e.target.value })
+            }
+          />
+          <input
+            placeholder="Ataque 4"
+            value={pokemon.ataque4}
+            onChange={(e) =>
+              setPokemon({ ...pokemon, ataque4: e.target.value })
+            }
+          />
+
           {editando ? (
             <>
               <button onClick={actualizar}>Actualizar</button>
               <button onClick={limpiar}>Cancelar</button>
             </>
           ) : (
-            <button onClick={agregar}>Agregar</button>
+            <button onClick={agregar}>Agregar Pokémon</button>
           )}
         </div>
 
         <hr />
 
-        {/* TABLA */}
-        <table border="1" width="100%">
+        <table>
           <thead>
             <tr>
               <th>Imagen</th>
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Categoría</th>
+              <th>Ataques</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -278,31 +534,24 @@ export default function CrudPokemon() {
           <tbody>
             {pokemones.length === 0 ? (
               <tr>
-                <td colSpan="5">Sin datos</td>
+                <td colSpan="6">No hay Pokémon</td>
               </tr>
             ) : (
               pokemones.map((p) => (
                 <tr key={p.id}>
                   <td>
-                    <img
-                      src={p.img}
-                      width="60"
-                      alt={p.nombre}
-                      onError={(e) =>
-                        (e.target.src =
-                          "https://via.placeholder.com/60")
-                      }
-                    />
+                    <img src={p.img} width="60" alt={p.nombre} />
                   </td>
-
                   <td>{p.nombre}</td>
                   <td>{p.descripcion}</td>
                   <td>{p.categoria}</td>
-
                   <td>
-                    <button onClick={() => editar(p)}>
-                      Editar
-                    </button>
+                    {p.ataques1?.join(", ")}
+                    <br />
+                    {p.ataques2?.join(", ")}
+                  </td>
+                  <td>
+                    <button onClick={() => editar(p)}>Editar</button>
                     <button onClick={() => eliminar(p.id)}>
                       Eliminar
                     </button>
@@ -314,11 +563,22 @@ export default function CrudPokemon() {
         </table>
 
         <br />
-
         <Link to="/personajes">Ver Personajes</Link>
       </div>
     </section>
   );
 }
+
+
+#Ahora Necesito implementar y verificar si el codigo de CrudPokemon tiene esto que me solicitan, pero necesito mantener lo que ya esta hecho 
+
+o	Implementación CRUD: Desarrolle componentes en React que permitan Crear, Leer, Actualizar y Eliminar (CRUD) registros en su aplicación.
+o	Persistencia de Datos: Todos los registros gestionados deben guardarse y recuperarse utilizando el localStorage del navegador. Asegúrese de usar el hook useEffect para cargar los datos iniciales al renderizar la aplicación.
+o	Integridad y Seguridad de Datos: Implemente validaciones rigurosas en los formularios antes de realizar cualquier operación de guardado en el localStorage. Asegúrese de prevenir la inyección de código (XSS), sanitizando las entradas y validando que no existan campos vacíos o datos con formatos incorrectos.
+
+o	Peticiones HTTP: Codifique scripts asíncronos utilizando Fetch o la librería Axios para consumir datos desde una API REST pública (por ejemplo, JSONPlaceholder, RandomUser, o la API de su preferencia que complemente su problemática).
+o	Manejo de Errores (Error Handling): Implemente bloques try-catch para gestionar adecuadamente las peticiones. La interfaz debe reflejar estados de carga (loading) y renderizar mensajes de error amigables para el usuario en caso de que la API no responda correctamente.
+o	Validaciones con IA: Apóyese en herramientas de Inteligencia Artificial para generar e implementar los mecanismos más óptimos de validación de respuestas HTTP y manejo de excepciones en su código.
+
 
 
