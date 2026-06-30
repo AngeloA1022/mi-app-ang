@@ -21,6 +21,7 @@ const IMAGENES_LOCALES = {
 };
 
 
+
 const estadoInicial = {
   nombre: "",
   descripcion: "",
