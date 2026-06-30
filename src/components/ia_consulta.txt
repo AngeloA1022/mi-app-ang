@@ -573,6 +573,11 @@ export default function CrudPokemon() {
 #Ahora Necesito implementar y verificar si el codigo de CrudPokemon tiene esto que me solicitan, pero necesito mantener lo que ya esta hecho,
 la poke api necesito mantenerla 
 
+#necesito que sea utilice esta api que tiene este link https://pokeapi.co/api/v2/pokemon/${nombre},
+
+#pero las imagenes que ya estaban no me aparecen
+
+
 o	Implementación CRUD: Desarrolle componentes en React que permitan Crear, Leer, Actualizar y Eliminar (CRUD) registros en su aplicación.
 o	Persistencia de Datos: Todos los registros gestionados deben guardarse y recuperarse utilizando el localStorage del navegador. Asegúrese de usar el hook useEffect para cargar los datos iniciales al renderizar la aplicación.
 o	Integridad y Seguridad de Datos: Implemente validaciones rigurosas en los formularios antes de realizar cualquier operación de guardado en el localStorage. Asegúrese de prevenir la inyección de código (XSS), sanitizando las entradas y validando que no existan campos vacíos o datos con formatos incorrectos.
