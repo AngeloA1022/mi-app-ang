@@ -20,6 +20,7 @@ const IMAGENES_LOCALES = {
   venusaur
 };
 
+
 const estadoInicial = {
   nombre: "",
   descripcion: "",
