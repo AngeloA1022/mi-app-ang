@@ -1,6 +1,7 @@
 
 #Necesito que este codigo sea funcional y que utilice una api de pokemon
 #Necesito que sea utilice esta api que tiene este link https://pokeapi.co/api/v2/pokemon/${nombre}
+#Ahora Necesito implementar esto a mi codigo de CrudPokemon
 
 
 import React, { useState, useEffect } from "react";
